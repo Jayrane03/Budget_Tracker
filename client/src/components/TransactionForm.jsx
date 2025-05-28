@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import BASE_URL from '../services/helper';
+import config from '../services/helper';
 const TransactionForm = ({ addTransaction }) => {
   const [formData, setFormData] = useState({
     description: '',
@@ -23,7 +23,7 @@ const TransactionForm = ({ addTransaction }) => {
     
     try {
       setLoading(true);
-      const res = await axios.post(`${BASE_URL}/api/categorize`, { description });
+      const res = await axios.post(`${config.BASE_URL}/api/categorize`, { description });
       setFormData({ ...formData, category: res.data.category });
     } catch (err) {
       console.error('Error categorizing transaction', err);

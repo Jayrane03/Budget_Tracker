@@ -11,7 +11,7 @@ import {
 } from 'chart.js';
 import { Doughnut, Pie, Bar } from 'react-chartjs-2';
 import TransactionForm from '../TransactionForm';
-import BASE_URL from '../../services/helper';
+import config from '../../services/helper';
 import '../../Styles/Dashboard.css';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
@@ -53,7 +53,7 @@ const Dashboard = () => {
   const analyzeTransactions = async (transactionsData) => {
     try {
      const res = await axios.post(
-  `${BASE_URL}/api/analyze`,
+  `${config.BASE_URL}/api/analyze`,
   { transactions: transactionsData },
   {
     headers: { 'Content-Type': 'application/json' },
@@ -71,7 +71,7 @@ setInsights(res.data.insights || []);
 
   const addTransaction = async (transaction) => {
     try {
-      const res = await axios.post(`${BASE_URL}/api/transactions`, transaction, {
+      const res = await axios.post(`${config.BASE_URL}/api/transactions`, transaction, {
         headers: {
           'x-auth-token': localStorage.getItem('token'),
         },

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import BASE_URL from '../../services/helper';
+import config from '../../services/helper';
 import '../../Styles/pages.css'; // Ensure you have the animations CSS file
 import aiImage from '/login.jpg'; // Add your image to this path
 
@@ -30,7 +30,7 @@ const Register = ({ setIsAuthenticated }) => {
 
     try {
       const newUser = { name, email, password };
-      const res = await axios.post(`${BASE_URL}/register`, newUser);
+      const res = await axios.post(`${config.BASE_URL}/register`, newUser);
       localStorage.setItem('token', res.data.token);
       setIsAuthenticated(true);
       navigate('/dashboard');

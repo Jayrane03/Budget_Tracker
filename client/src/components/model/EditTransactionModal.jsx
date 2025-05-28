@@ -1,7 +1,7 @@
 // File: components/EditTransactionModal.jsx
 import { useState } from 'react';
 import axios from 'axios';
-import BASE_URL from '../../services/helper';
+import config from '../../services/helper';
 import "../../Styles/Dashboard.css"; // Ensure you have the styles for the modal
 const EditTransactionModal = ({ transaction, onClose, onSave }) => {
   const [formData, setFormData] = useState({ ...transaction });
@@ -13,7 +13,7 @@ const EditTransactionModal = ({ transaction, onClose, onSave }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`${BASE_URL}/api/transactions/${transaction._id}`, formData, {
+      await axios.put(`${config.BASE_URL}/api/transactions/${transaction._id}`, formData, {
         headers: { 'x-auth-token': localStorage.getItem('token') },
       });
       onSave();

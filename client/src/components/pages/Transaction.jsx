@@ -1,7 +1,7 @@
 // File: components/Transactions.jsx
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import BASE_URL from '../../services/helper';
+import config from '../../services/helper';
 import EditTransactionModal from '../model/EditTransactionModal';
 import { CSVLink } from 'react-csv';
 
@@ -17,7 +17,7 @@ const Transactions = () => {
 
   const fetchTransactions = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/api/transactions`, {
+      const res = await axios.get(`${config.BASE_URL}/api/transactions`, {
         headers: {
           'x-auth-token': localStorage.getItem('token'),
         },

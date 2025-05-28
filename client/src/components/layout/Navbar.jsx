@@ -13,7 +13,7 @@ import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
-import BASE_URL from '../../services/helper'; // Adjust as needed
+import config from '../../services/helper'; // Adjust as needed
 
 const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
         const token = localStorage.getItem('token');
         if (!token) return;
 
-        const res = await axios.get(`${BASE_URL}/api/auth/user`, {
+        const res = await axios.get(`${config.BASE_URL}/api/auth/user`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

@@ -10,7 +10,7 @@ import {
   Legend 
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import BASE_URL  from '../../services/helper';
+import config  from '../../services/helper';
 import '../../Styles/pages.css'; // Ensure you have the styles for the reports page
 ChartJS.register(
   CategoryScale,
@@ -33,7 +33,7 @@ const Reports = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/api/transactions`, {
+        const res = await axios.get(`${config.BASE_URL}/api/transactions`, {
           headers: {
             'x-auth-token': localStorage.getItem('token')
           }
@@ -42,7 +42,7 @@ const Reports = () => {
         
         if (res.data.length > 0) {
           // Call Python AI for analysis
-          const analysis = await axios.post(`${BASE_URL}/api/analyze`, {
+          const analysis = await axios.post(`${config.BASE_URL}/api/analyze`, {
             transactions: res.data
           });
           

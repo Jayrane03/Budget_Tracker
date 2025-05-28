@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import BASE_URL from '../../services/helper';
+import config from '../../services/helper';
 
 const Login = ({ setIsAuthenticated }) => {
   const [formData, setFormData] = useState({
@@ -19,7 +19,7 @@ const Login = ({ setIsAuthenticated }) => {
   const onSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${BASE_URL}/login`, formData);
+      const res = await axios.post(`${config.BASE_URL}/login`, formData);
       localStorage.setItem('token', res.data.token);
       setIsAuthenticated(true);
       localStorage.setItem('user', JSON.stringify(res.data.user));

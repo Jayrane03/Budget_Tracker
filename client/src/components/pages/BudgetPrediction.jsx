@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-
+import config from '../../services/helper';
 const PredictBudget = () => {
   const [income, setIncome] = useState(5000);
   const [budgetData, setBudgetData] = useState(null);
@@ -25,10 +25,10 @@ const PredictBudget = () => {
     try {
       setError(null);
 
-      const transRes = await axios.get(`http://localhost:5000/api/transactions/${userId}`);
+      const transRes = await axios.get(`${config.BASE_URL}/api/transactions/${userId}`);
       const transactions = transRes.data.transactions;
 
-      const res = await axios.post('http://localhost:5001/api/predict-budget', {
+      const res = await axios.post(`${config.PYTHON_SERVER_URL}/api/predict-budget`, {
         income: Number(income),
         transactions,
       });
