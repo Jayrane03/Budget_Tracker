@@ -18,13 +18,22 @@ const app = express();
 connectDB();
 
 // CORS setup
-const allowedOrigin = process.env.FRONTEND_URL || 'http://localhost:5173';
+const allowedOrigins = [
+  'http://localhost:5173',                            // Local dev
+  'https://budget-tracker-frontend-ijfx.onrender.com' // Production
+];
 
 app.use(cors({
-  origin: allowedOrigin,
-  credentials: true, // if you're using cookies or auth headers
+  origin: function (origin, callback) {
+    // Allow no origin (like Postman or curl) or whitelisted origins
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS not allowed from this origin: ' + origin));
+    }
+  },
+  credentials: true,
 }));
-
 // Body parser
 app.use(express.json());
 

@@ -1,194 +1,144 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Tooltip from '@mui/material/Tooltip';
-import Avatar from '@mui/material/Avatar';
-import Container from '@mui/material/Container';
-import config from '../../services/helper'; // Adjust as needed
+import { AuthContext } from '../AuthContext'; // Ensure this path is correct
 
-const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
+// Material-UI Imports
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  Avatar,
+  Menu,
+  MenuItem,
+  Box, // For flexible layout
+} from '@mui/material';
+import { AccountCircle } from '@mui/icons-material'; // Example icon for user menu
+
+const Navbar = () => {
+  const { isAuthenticated, user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
-  const [username, setUsername] = useState('');
 
-  // ✅ Fetch user on mount if authenticated
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) return;
+  // State for the user menu (anchor element)
+  const [anchorEl, setAnchorEl] = useState(null);
+  const isMenuOpen = Boolean(anchorEl);
 
-        const res = await axios.get(`${config.BASE_URL}/api/auth/user`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        setUsername(res.data.name || res.data.username || 'User');
-      } catch (err) {
-        console.error('Error fetching user:', err);
-      }
-    };
-
-    if (isAuthenticated) {
-      fetchUser();
-    }
-  }, [isAuthenticated]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsAuthenticated(false);
-    navigate('/login');
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const handleOpenNavMenu = (e) => setAnchorElNav(e.currentTarget);
-  const handleOpenUserMenu = (e) => setAnchorElUser(e.currentTarget);
-  const handleCloseNavMenu = () => setAnchorElNav(null);
-  const handleCloseUserMenu = () => setAnchorElUser(null);
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
-  const authLinks = [
-    { text: 'Dashboard', path: '/dashboard' },
-    { text: 'Transactions', path: '/transactions' },
-    { text: 'Reports', path: '/reports' },
-    { text: 'Budget Prediction', path: '/predict-budget' },
-  ];
+  const handleLogout = () => {
+    logout(); // Call the logout function from AuthContext
+    handleMenuClose(); // Close the menu
+    navigate('/login'); // Redirect to login page after logout
+  };
+
+  // Get first letter of user's name or email for avatar
+  const getAvatarInitials = () => {
+    if (user?.name) {
+      return user.name.charAt(0).toUpperCase();
+    }
+    if (user?.email) {
+      return user.email.charAt(0).toUpperCase();
+    }
+    return '';
+  };
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          {/* Logo and Title */}
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <img
-              src="/freepik__budget.png"
-              alt="Logo"
-              style={{
-                width: 50,
-                height: 50,
-                padding: '5px',
-                backgroundColor: 'black',
-                borderRadius: '10px',
-                marginRight: '8px',
-              }}
-            />
-            <Typography
-              variant="h6"
-              noWrap
-              component={Link}
-              to="/"
-              sx={{
-                mr: 2,
-                backgroundColor: 'black',
-                padding: '5px',
-                borderRadius: '10px',
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.2rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              BudgetAI
-            </Typography>
-          </Box>
+    <AppBar position="static" sx={{ bgcolor: 'primary.dark', boxShadow: 3 }}>
+      <Toolbar>
+        {/* Logo/Brand Name */}
+        <Typography
+          variant="h6"
+          noWrap
+          component={Link} // Use Link for navigation
+          to="/"
+          sx={{
+            flexGrow: 1, // Takes up available space
+            textDecoration: 'none',
+            color: 'inherit', // Inherit color from AppBar
+            fontWeight: 'bold',
+            letterSpacing: 0.5,
+            mr: 2, // Margin right
+          }}
+        >
+          BudgetTracker
+        </Typography>
 
-          {/* Mobile Menu */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton size="large" color="inherit" onClick={handleOpenNavMenu}>
-              <MenuIcon />
+        {/* Navigation Links (always visible for now) */}
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}> {/* Hide on small screens, show on medium+ */}
+          <Button color="inherit" component={Link} to="/dashboard">
+            Dashboard
+          </Button>
+          <Button color="inherit" component={Link} to="/transactions">
+            Transactions
+          </Button>
+          <Button color="inherit" component={Link} to="/reports">
+            Reports
+          </Button>
+          <Button color="inherit" component={Link} to="/predict-budget">
+            Predict Budget
+          </Button>
+        </Box>
+
+        {/* Spacer to push auth buttons to the right */}
+        <Box sx={{ flexGrow: 1 }} />
+
+        {/* Conditional rendering for Auth/User */}
+        {isAuthenticated ? (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            {/* Welcome message */}
+            <Typography variant="body1" sx={{ color: 'text.primary', display: { xs: 'none', sm: 'block' } }}>
+              Hi, {user?.name || user?.email}
+            </Typography>
+            {/* User Avatar with Menu */}
+            <IconButton
+              size="large"
+              edge="end"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <Avatar sx={{ bgcolor: 'secondary.main', width: 32, height: 32 }}>
+                {getAvatarInitials()}
+              </Avatar>
             </IconButton>
             <Menu
-              anchorEl={anchorElNav}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-              transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={isMenuOpen}
+              onClose={handleMenuClose}
             >
-              {isAuthenticated &&
-                authLinks.map((link) => (
-                  <MenuItem key={link.text} onClick={handleCloseNavMenu}>
-                    <Typography
-                      textAlign="center"
-                      component={Link}
-                      to={link.path}
-                      sx={{ textDecoration: 'none', color: 'inherit' }}
-                    >
-                      {link.text}
-                    </Typography>
-                  </MenuItem>
-                ))}
-              {!isAuthenticated && (
-                <>
-                  <MenuItem onClick={handleCloseNavMenu}>
-                    <Link to="/login">Login</Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleCloseNavMenu}>
-                    <Link to="/register">Register</Link>
-                  </MenuItem>
-                </>
-              )}
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </Box>
-
-          {/* Desktop Links */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {isAuthenticated &&
-              authLinks.map((link) => (
-                <Button
-                  key={link.text}
-                  component={Link}
-                  to={link.path}
-                  sx={{ my: 2, color: 'white' }}
-                >
-                  {link.text}
-                </Button>
-              ))}
-            {!isAuthenticated && (
-              <>
-                <Button component={Link} to="/login" sx={{ color: 'white' }}>
-                  Login
-                </Button>
-                <Button component={Link} to="/register" sx={{ color: 'white' }}>
-                  Register
-                </Button>
-              </>
-            )}
+        ) : (
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Button color="inherit" component={Link} to="/login">
+              Login
+            </Button>
+            <Button color="inherit" component={Link} to="/register">
+              Register
+            </Button>
           </Box>
-
-          {/* Avatar + User Menu */}
-          {isAuthenticated && (
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar sx={{ bgcolor: 'secondary.main' }}>
-                    {username ? username.charAt(0).toUpperCase() : 'U'}
-                  </Avatar>
-                </IconButton>
-              </Tooltip>
-              <Menu
-                anchorEl={anchorElUser}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-              >
-                <MenuItem onClick={handleLogout}>
-                  <Typography textAlign="center">Logout</Typography>
-                </MenuItem>
-              </Menu>
-            </Box>
-          )}
-        </Toolbar>
-      </Container>
+        )}
+      </Toolbar>
     </AppBar>
   );
 };

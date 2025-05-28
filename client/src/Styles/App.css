@@ -77,7 +77,93 @@ ul {
   width: 100%;
   margin-top: 1rem;
 }
+/* Nav bar */
+/* Navbar Container */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background-color: #222; /* Dark background */
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+}
 
+/* Logo */
+.navbar-logo {
+    font-size: 24px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold; /* Make logo bold */
+    letter-spacing: 0.5px; /* Slight letter spacing */
+}
+
+/* Links Container */
+.navbar-links-container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+/* Individual Links */
+.navbar-link {
+    color: #ccc; /* Lighter grey for links */
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 5px 0; /* Add a little padding for easier clicking */
+    transition: color 0.3s ease-in-out, transform 0.2s ease-out; /* Smooth transitions */
+}
+
+.navbar-link:hover {
+    color: #fff; /* White on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Subtle glow on hover */
+}
+
+/* Buttons (Logout) */
+.navbar-button {
+    padding: 8px 16px; /* Slightly more padding for buttons */
+    background-color: #e74c3c; /* Red color */
+    border: none;
+    border-radius: 6px; /* Slightly more rounded corners */
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600; /* Semibold text */
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-out;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Shadow for button */
+}
+
+.navbar-button:hover {
+    background-color: #c0392b; /* Darker red on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+/* Welcome Text */
+.navbar-welcome {
+    color: #fff;
+    margin-right: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Responsive adjustments (optional, but good practice) */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 15px;
+        gap: 10px;
+    }
+    .navbar-links-container {
+        flex-wrap: wrap; /* Allow links to wrap on smaller screens */
+        justify-content: center;
+        gap: 15px;
+    }
+    .navbar-logo {
+        margin-bottom: 10px;
+    }
+}
 /* Landing Page */
 .landing {
   position: relative;

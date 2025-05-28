@@ -42,7 +42,7 @@ const Reports = () => {
         
         if (res.data.length > 0) {
           // Call Python AI for analysis
-          const analysis = await axios.post(`${config.BASE_URL}/api/analyze`, {
+          const analysis = await axios.post(`${config.PYTHON_SERVER_URL}/api/analyze`, {
             transactions: res.data
           });
           

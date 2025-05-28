@@ -3,10 +3,10 @@ const express = require('express');
 const router = express.Router();
 const { registerUser, loginUser, getUser } = require('../controller/authController');
 const auth = require('../middleware/auth');
-
+const User = require('../models/User');
 router.post('/register', registerUser);
 router.post('/login', loginUser);
-router.get('/user', auth, getUser);
+// router.get('/user', auth, getUser);
 router.get('/user', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password'); // remove password

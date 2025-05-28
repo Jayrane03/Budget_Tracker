@@ -1,14 +1,17 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import config from '../../services/helper';
+import { AuthContext } from '../AuthContext'; // Import AuthContext
+import '../../Styles/pages.css'; // Ensure you have the animations CSS file
 
-const Login = ({ setIsAuthenticated }) => {
+const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
 
+  const { login } = useContext(AuthContext); // Get login function from context
   const navigate = useNavigate();
   const { email, password } = formData;
 
@@ -19,10 +22,9 @@ const Login = ({ setIsAuthenticated }) => {
   const onSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${config.BASE_URL}/login`, formData);
-      localStorage.setItem('token', res.data.token);
-      setIsAuthenticated(true);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
+      const res = await axios.post(`${config.BASE_URL}/api/auth/login`, formData);
+      // Call the login function from AuthContext
+      login(res.data.token, res.data.user); // Pass both token and user data
       navigate('/dashboard');
     } catch (err) {
       alert('Login failed');
@@ -31,54 +33,22 @@ const Login = ({ setIsAuthenticated }) => {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center relative"
-      style={{ backgroundImage: "url('/login.jpg')" }}
-    >
-      <div className="absolute inset-0 bg-black bg-opacity-60"></div>
-
-      <form
-        onSubmit={onSubmit}
-        className="relative z-10 bg-white/10 backdrop-blur-md shadow-xl rounded-2xl p-8 md:p-10 w-full max-w-md transition-all duration-300 animate-fadeIn"
-      >
-        <h1 className="text-3xl font-bold text-white mb-6 text-center">Welcome Back</h1>
-
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm text-white mb-1">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={email}
-            onChange={onChange}
-            required
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 bg-white/80"
-          />
+    <div className="login-container">
+      <div className="login-overlay"></div>
+      <form onSubmit={onSubmit} className="login-form">
+        <h1 className="login-title">Welcome Back</h1>
+        <div className="form-group">
+          <label htmlFor="email" className="form-label">Email</label>
+          <input type="email" name="email" value={email} onChange={onChange} required className="form-input" autoComplete="email" />
         </div>
-
-        <div className="mb-6">
-          <label htmlFor="password" className="block text-sm text-white mb-1">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={onChange}
-            required
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 bg-white/80"
-          />
+        <div className="form-group">
+          <label htmlFor="password" className="form-label">Password</label>
+          <input type="password" name="password" value={password} onChange={onChange} required className="form-input" autoComplete="current-password" />
         </div>
-
-        <button
-          type="submit"
-          className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-purple-600 hover:to-indigo-600 text-white font-semibold py-2 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
-        >
-          Login
-        </button>
-
-        <p className="text-sm text-center text-white mt-4">
+        <button type="submit" className="login-button">Login</button>
+        <p className="login-register-text">
           Don't have an account?{' '}
-          <Link to="/register" className="text-blue-300 hover:underline">
-            Register
-          </Link>
+          <Link to="/register" className="register-link">Register</Link>
         </p>
       </form>
     </div>

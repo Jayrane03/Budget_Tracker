@@ -25,30 +25,35 @@ const Dashboard = () => {
   const [selectedChart, setSelectedChart] = useState('Doughnut');
 
   const ChartComponent = chartTypes[selectedChart];
+useEffect(() => {
+ const fetchTransactions = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    console.error('No token found');
+    setLoading(false); // ✅ set loading false to prevent hanging
+    return;
+  }
 
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        const res = await axios.get(`${config.BASE_URL}/api/transactions`, {
-          headers: {
-            'x-auth-token': localStorage.getItem('token'),
-          },
-        });
-        setTransactions(res.data);
+  try {
+    const res = await axios.get(`${config.BASE_URL}/api/transactions`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-        // Analyze only after fetch
-        if (res.data.length > 0) {
-          analyzeTransactions(res.data);
-        }
-      } catch (err) {
-        console.error('Error fetching transactions', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    setTransactions(res.data.transactions || []);
+  } catch (err) {
+    console.error('Error fetching transactions', err);
+    setTransactions([]); // ✅ prevent undefined
+  } finally {
+    setLoading(false); // ✅ always stop loading
+  }
+};
 
-    fetchTransactions();
-  }, []); // Only on mount
+
+  fetchTransactions();
+}, []);
+
 
   const analyzeTransactions = async (transactionsData) => {
     try {
@@ -86,12 +91,13 @@ setInsights(res.data.insights || []);
   };
 
   // Expense chart data
-  const categoryTotals = {};
-  transactions.forEach((t) => {
-    if (t.type === 'expense') {
-      categoryTotals[t.category] = (categoryTotals[t.category] || 0) + Math.abs(t.amount);
-    }
-  });
+ const categoryTotals = {};
+(transactions || []).forEach((t) => {
+  if (t.type === 'expense') {
+    categoryTotals[t.category] = (categoryTotals[t.category] || 0) + Math.abs(t.amount);
+  }
+});
+
 
   const chartData = {
     labels: Object.keys(categoryTotals),

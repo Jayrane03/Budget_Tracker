@@ -1,3 +1,4 @@
+// ✅ Final ProtectedRoute.jsx
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ isAuthenticated, children }) => {
@@ -8,3 +9,4 @@ const ProtectedRoute = ({ isAuthenticated, children }) => {
 };
 
 export default ProtectedRoute;
+

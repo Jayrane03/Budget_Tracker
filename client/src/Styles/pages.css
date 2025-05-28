@@ -43,6 +43,184 @@
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
 }
+/* Login */
+/* Import a Google Font for a modern look (Optional, but recommended) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+/* Basic Reset for Consistency */
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif; /* Apply the imported font */
+    box-sizing: border-box;
+}
+
+/* Login Container - Full Page Background Image */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('/login.jpg') center/cover no-repeat; /* Shorthand for background properties */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Overlay for Darkening and Opacity */
+.login-overlay {
+    position: absolute;
+    inset: 0; /* Shorthand for top: 0; right: 0; bottom: 0; left: 0; */
+    background-color: rgba(0, 0, 0, 0.7); /* Darker overlay for better text contrast */
+    z-index: 1; /* Below the form */
+}
+
+/* Login Form Styling */
+.login-form {
+    position: relative;
+    z-index: 2; /* Above the overlay */
+    background-color: rgba(255, 255, 255, 0.08); /* Slightly visible white background */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(10px); /* For Safari support */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Stronger shadow */
+    border-radius: 20px; /* More rounded corners */
+    padding: 30px 40px; /* Increased padding */
+    width: 100%;
+    max-width: 420px; /* Slightly wider form */
+    border: 1px solid rgba(255, 255, 255, 0.18); /* Subtle border */
+    animation: fadeIn 1s ease-out; /* Animation for form appearance */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Form Title */
+.login-title {
+    font-size: 2.2rem; /* Larger title */
+    font-weight: 700; /* Bolder */
+    color: #ffffff;
+    margin-bottom: 30px; /* More space below title */
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); /* Subtle text shadow */
+}
+
+/* Form Group (Label + Input) */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Form Label */
+.form-label {
+    display: block;
+    font-size: 0.95rem; /* Slightly larger label text */
+    color: #e0e0e0; /* Lighter grey for labels */
+    margin-bottom: 8px;
+    font-weight: 600; /* Semibold label */
+}
+
+/* Form Input Fields */
+.form-input {
+    width: 100%;
+    padding: 12px 15px; /* More padding */
+    border-radius: 8px; /* Slightly more rounded inputs */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border */
+    background-color: rgba(255, 255, 255, 0.15); /* Semi-transparent input background */
+    color: #ffffff; /* White text for input */
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box; /* Crucial for width: 100% */
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #8a2be2; /* Blue-violet focus border */
+    box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.4); /* Glowing effect on focus */
+    background-color: rgba(255, 255, 255, 0.25); /* Slightly less transparent on focus */
+}
+
+/* Placeholder color for dark theme */
+.form-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Login Button */
+.login-button {
+    width: 100%;
+    background: linear-gradient(135deg, #8a2be2 0%, #4f00bc 100%); /* Purple gradient */
+    color: #ffffff;
+    font-weight: 600; /* Semibold */
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem; /* Larger font size */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Shadow for button */
+}
+
+.login-button:hover {
+    background: linear-gradient(135deg, #9b4dff 0%, #5f00e0 100%); /* Slightly lighter on hover */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Register Link Text */
+.login-register-text {
+    font-size: 0.9rem;
+    color: #d0d0d0; /* Lighter grey for surrounding text */
+    text-align: center;
+    margin-top: 25px;
+}
+
+.register-link {
+    color: #a0a0ff; /* Light blue for the link */
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.register-link:hover {
+    text-decoration: underline;
+    color: #c0c0ff; /* Lighter blue on hover */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .login-form {
+        padding: 25px 30px;
+        max-width: 90%; /* Adjust max-width for smaller screens */
+    }
+
+    .login-title {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-form {
+        padding: 20px 25px;
+        border-radius: 15px; /* Slightly less rounded for very small screens */
+    }
+
+    .login-title {
+        font-size: 1.6rem;
+        margin-bottom: 25px;
+    }
+
+    .form-input, .login-button {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+    }
+}
+
 
 /* Register */
 /* Register.css */
