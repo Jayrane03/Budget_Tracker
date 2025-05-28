@@ -1,0 +1,391 @@
+:root {
+  --primary-color: #3b82f6;
+  --dark-color: #e5e7eb;
+  --light-color: #1f2937;
+  --danger-color: #ef4444;
+  --success-color: #22c55e;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  background-color: #0f172a;
+  color: var(--dark-color);
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  transition: 0.3s;
+  transform: translateY(-5px);
+  -webkit-transform: translateY(-5px);
+  -moz-transform: translateY(-5px);
+  -ms-transform: translateY(-5px);
+  -o-transform: translateY(-5px);
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -o-transition: 0.3s;
+}
+
+ul {
+  list-style: none;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 2rem;
+  background-color: var(--primary-color);
+  color: #fff;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.navbar h1 {
+  font-size: 1.5rem;
+}
+
+.navbar a {
+  color: #fff;
+  padding: 0.45rem;
+  margin: 0 0.25rem;
+}
+
+.navbar ul {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* Landing Page */
+.landing {
+  position: relative;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-inner {
+  text-align: center;
+}
+
+.landing h1 {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.landing p {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Auth */
+.auth-container {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--light-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px #0f172a;
+  text-align: center;
+  color: var(--dark-color);
+}
+
+.auth-container h1 {
+  margin-bottom: 1rem;
+}
+
+.auth-container p {
+  margin-top: 1rem;
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #374151;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: #111827;
+  color: var(--dark-color);
+}
+
+.input-with-button {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.input-with-button input {
+  flex: 1;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  background: var(--light-color);
+  color: var(--dark-color);
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* Dashboard */
+.dashboard {
+  padding: 2rem 0;
+}
+
+.dashboard h1 {
+  margin-bottom: 1rem;
+}
+
+.dashboard-content {
+  padding: 2rem;
+  display: grid;
+  grid-gap: 2rem;
+}
+
+.summary-cards {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  flex: 1;
+  padding: 1.5rem;
+  border-radius: 16px;
+  color: #fff;
+  background: #1e293b;
+  box-shadow: 0 4px 12px #0f172a;
+  text-align: center;
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: #a5b4fc;
+}
+
+.card h2 {
+  font-size: 2rem;
+}
+
+.income {
+  background: var(--success-color);
+}
+
+.expense {
+  background: var(--danger-color);
+}
+
+.balance {
+  background: #3b82f6;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Charts & Insights */
+.chart-container,
+.insights-container {
+  background: #1f2937;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px #0f172a;
+  color: var(--dark-color);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.chart-select {
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  border: 1px solid #374151;
+  background: #111827;
+  font-weight: 500;
+  color: #e5e7eb;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.chart-select:hover {
+  background: #1e40af;
+  border-color: #3b82f6;
+}
+
+.insights-list {
+  list-style: disc;
+  margin-left: 1.5rem;
+  line-height: 1.6;
+  color: var(--dark-color);
+}
+
+/* Form Container */
+.form-container {
+  background: #1f2937;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px #0f172a;
+  color: var(--dark-color);
+}
+
+.form-container h2 {
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+/* Transaction List */
+.transactions {
+  padding: 1rem 0;
+}
+
+.transactions h1 {
+  margin-bottom: 1rem;
+}
+
+.transaction-list {
+  background: #1f2937;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px #0f172a;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #374151;
+}
+
+th {
+  background-color: #111827;
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+.expense-text {
+  color: var(--danger-color);
+}
+
+.income-text {
+  color: var(--success-color);
+}
+
+.delete-btn {
+  background: var(--danger-color);
+  color: #fff;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  opacity: 0.9;
+}
+
+/* Reports */
+.reports {
+  padding: 1rem 0;
+}
+
+.reports h1 {
+  margin-bottom: 1rem;
+}
+
+.reports-content {
+  display: grid;
+  grid-gap: 2rem;
+}
+
+.chart-section,
+.anomalies-section {
+  background: #1f2937;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px #0f172a;
+  color: var(--dark-color);
+}
+
+.chart-section h2,
+.anomalies-section h2 {
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.anomalies-table {
+  margin-top: 1rem;
+}

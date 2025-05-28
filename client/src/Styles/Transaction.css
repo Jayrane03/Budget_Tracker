@@ -1,0 +1,99 @@
+.transactions {
+  padding: 2rem;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #0d1117, #1c1f26);
+  color: #f0f6fc;
+  font-family: 'Segoe UI', sans-serif;
+}
+.transactions::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #58a6ff33, transparent);
+  filter: blur(100px);
+  z-index: 0;
+}
+
+.transactions h1 {
+  text-align: center;
+  color: #58a6ff;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.transaction-list {
+  overflow-x: auto;
+  background: #161b22;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+thead {
+  background-color: #21262d;
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #30363d;
+  font-size: 0.95rem;
+}
+
+th {
+  color: #c9d1d9;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+tr.income td {
+  background-color: rgba(63, 185, 80, 0.05);
+}
+
+tr.expense td {
+  background-color: rgba(248, 81, 73, 0.05);
+}
+
+.income-text {
+  color: #3fb950;
+  font-weight: bold;
+}
+
+.expense-text {
+  color: #f85149;
+  font-weight: bold;
+}
+
+.delete-btn {
+  background-color: #f85149;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  color: #ffffff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #da3633;
+}
+
+@media (max-width: 768px) {
+  th, td {
+    padding: 0.6rem;
+  }
+
+  table {
+    font-size: 0.85rem;
+  }
+}
