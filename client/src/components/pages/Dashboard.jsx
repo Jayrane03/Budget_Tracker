@@ -29,7 +29,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/api/transactions`, {
+        const res = await axios.get(`${config.BASE_URL}/api/transactions`, {
           headers: {
             'x-auth-token': localStorage.getItem('token'),
           },
