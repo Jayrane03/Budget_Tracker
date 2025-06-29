@@ -1,201 +1,145 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-} from 'chart.js';
-import { Doughnut, Pie, Bar } from 'react-chartjs-2';
-import TransactionForm from '../TransactionForm';
-import config from '../../services/helper';
-import '../../Styles/Dashboard.css';
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import { useNavigate, useLocation, Routes, Route } from 'react-router-dom';
+import Navbar from '../layout/Navbar';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 
-ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+import { createTheme } from '@mui/material/styles';
+import { AppProvider } from '@toolpad/core/AppProvider';
+import { DemoProvider } from '@toolpad/core/internal';
 
-const chartTypes = { Doughnut, Pie, Bar };
+import { Box, Tabs, Tab } from '@mui/material';
+import BudgetDashboardContent from '../layout/BudgetDashboardContent';
+import Transactions from '../pages/Transaction';
+import Reports from '../pages/Reports';
+import PredictBudget from '../pages/BudgetPrediction';
 
-const Dashboard = () => {
-  const [transactions, setTransactions] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [insights, setInsights] = useState([]);
-  const [selectedChart, setSelectedChart] = useState('Doughnut');
+// Custom dark theme (keep your existing one if needed)
 
-  const ChartComponent = chartTypes[selectedChart];
-useEffect(() => {
- const fetchTransactions = async () => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    console.error('No token found');
-    setLoading(false); // ✅ set loading false to prevent hanging
-    return;
-  }
-
-  try {
-    const res = await axios.get(`${config.BASE_URL}/api/transactions`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+const demoTheme = createTheme({
+  cssVariables: { colorSchemeSelector: 'data-toolpad-color-scheme' },
+  colorSchemes: {
+    light: {
+      palette: {
+        mode: 'light',
+        primary: { main: '#0f0c29', contrastText: '#ffffff' },
+        secondary: { main: '#ff6b6b' },
+        background: { default: '#f5f7fb', paper: '#ffffff' },
+        text: { primary: '#1a1a1a', secondary: '#555' },
       },
-    });
-
-    setTransactions(res.data.transactions || []);
-  } catch (err) {
-    console.error('Error fetching transactions', err);
-    setTransactions([]); // ✅ prevent undefined
-  } finally {
-    setLoading(false); // ✅ always stop loading
-  }
-};
-
-
-  fetchTransactions();
-}, []);
-
-
-  const analyzeTransactions = async (transactionsData) => {
-    try {
-     const res = await axios.post(
-  `${config.BASE_URL}/api/analyze`,
-  { transactions: transactionsData },
-  {
-    headers: { 'Content-Type': 'application/json' },
-  }
-);
-
-    console.log('Response from /api/analyze:', res.data);
-setInsights(res.data.insights || []);
-
-      console.log('AI Insights:', res.data.insights);
-    } catch (err) {
-      console.error('Error analyzing transactions', err);
-    }
-  };
-
-  const addTransaction = async (transaction) => {
-    try {
-      const res = await axios.post(`${config.BASE_URL}/api/transactions`, transaction, {
-        headers: {
-          'x-auth-token': localStorage.getItem('token'),
+    },
+    dark: {
+      palette: {
+        mode: 'dark',
+        primary: { main: '#08a087', contrastText: '#ffffff' },
+        background: { default: '#121212', paper: '#1e1e1e' },
+        text: { primary: '#ffffff', secondary: '#c9c9c9' },
+      },
+    },
+  },
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'linear-gradient(to right, #00ffd5, #08a087, #24243e)',
+          color: '#ffffff',
         },
-      });
-
-      const newTransactions = [...transactions, res.data];
-      setTransactions(newTransactions);
-      analyzeTransactions(newTransactions);
-    } catch (err) {
-      console.error('Error adding transaction', err);
-    }
-  };
-
-  // Expense chart data
- const categoryTotals = {};
-(transactions || []).forEach((t) => {
-  if (t.type === 'expense') {
-    categoryTotals[t.category] = (categoryTotals[t.category] || 0) + Math.abs(t.amount);
-  }
-});
-
-
-  const chartData = {
-    labels: Object.keys(categoryTotals),
-    datasets: [
-      {
-        label: 'Expenses',
-        data: Object.values(categoryTotals),
-        backgroundColor: [
-          '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
-        ],
-        borderWidth: 1,
       },
-    ],
-  };
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          backgroundImage: 'linear-gradient(to right, #00ffd5, #08a087, #24243e)',
+          color: '#0f0c29',
+        },
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          '&.Mui-selected': {
+            backgroundColor: '#e0f7fa',
+            color: '#0f0c29',
+          },
+        },
+      },
+    },
+  },
+  breakpoints: {
+    values: { xs: 0, sm: 600, md: 900, lg: 1200, xl: 1536 },
+  },
+});
+function DashboardLayout(props) {
+  const { window } = props;
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const totalIncome = transactions
-    .filter(t => t.type === 'income')
-    .reduce((acc, t) => acc + t.amount, 0);
+  const subPath = location.pathname.replace('/dashboard', '') || '/';
 
-  const totalExpense = transactions
-    .filter(t => t.type === 'expense')
-    .reduce((acc, t) => acc + Math.abs(t.amount), 0);
+  const router = React.useMemo(() => ({
+    pathname: location.pathname,
+    searchParams: new URLSearchParams(location.search),
+    navigate: (path) => navigate(path),
+  }), [location, navigate]);
+
+  const demoWindow = window !== undefined ? window() : undefined;
 
   return (
-    <div className="dashboard">
-      <h1>Dashboard</h1>
+    <DemoProvider window={demoWindow}>
+      <AppProvider
+        router={router}
+        // branding={{
+        //   logo: <img src="/freepik__budget.png" alt="logo" height="30" />,
+        //   title: 'BudgetAI',
+        //   homeUrl: '/dashboard',
+        // }}
+        theme={demoTheme}
+        window={demoWindow}
+      >
+        <Navbar />
+        {/* Clean full layout with no sidebar padding */}
+        <Box sx={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+          {/* Vertical Tabs */}
+          <Tabs
+            orientation="vertical"
+            value={subPath}
+            onChange={(e, value) => navigate(`/dashboard${value}`)}
+            sx={{
+              width: 250,
+              pt: 4,
+              backgroundColor: 'background.paper',
+              borderRight: 1,
+              borderColor: 'divider',
+              height: '100%',
+            }}
+          >
+            <Tab label="Dashboard" value="/" icon={<DashboardIcon />} iconPosition="start" />
+            <Tab label="Transactions" value="/transactions" icon={<ShoppingCartIcon />} iconPosition="start" />
+            <Tab label="Reports" value="/reports" icon={<BarChartIcon />} iconPosition="start" />
+            <Tab label="Predict Budget" value="/predict-budget" icon={<AutoGraphIcon />} iconPosition="start" />
+          </Tabs>
 
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div className="dashboard-content">
-          <div className="summary-cards">
-            <div className="card income">
-              <h3>Income</h3>
-              <h2>${totalIncome.toFixed(2)}</h2>
-            </div>
-            <div className="card expense">
-              <h3 >Expenses</h3>
-              <h2>${totalExpense.toFixed(2)}</h2>
-            </div>
-            <div className="card balance">
-              <h3>Balance</h3>
-              <h2>${(totalIncome - totalExpense).toFixed(2)}</h2>
-            </div>
-          </div>
-
-          <div className="dashboard-grid">
-            <div className="chart-container">
-              <div className="chart-header">
-                <h2>Expense Breakdown</h2>
-                <select
-                  value={selectedChart}
-                  onChange={(e) => setSelectedChart(e.target.value)}
-                  className="chart-select"
-                >
-                  <option value="Doughnut">Doughnut</option>
-                  <option value="Pie">Pie</option>
-                  <option value="Bar">Bar</option>
-                </select>
-              </div>
-
-              {chartData.labels.length > 0 ? (
-                <ChartComponent
-                  data={chartData}
-                  options={{
-                    responsive: true,
-                    plugins: {
-                      legend: {
-                        labels: {
-                          color: '#c9d1d9',
-                        },
-                      },
-                    },
-                  }}
-                />
-              ) : (
-                <p>No expense data to display</p>
-              )}
-            </div>
-
-            <div className="insights-container">
-              <h2>AI Insights</h2>
-              <ul className="insights-list">
-  {insights.map((insight, index) => (
-    <li key={index}>
-      🚨 {insight.description} (${insight.amount}) - {insight.category}
-    </li>
-  ))}
-</ul>
-
-            </div>
-          </div>
-
-          <TransactionForm addTransaction={addTransaction} />
-        </div>
-      )}
-    </div>
+          {/* Main content area */}
+          <Box sx={{ flexGrow: 1, p: 3, overflowY: 'auto' }}>
+            <Routes>
+              <Route path="/" element={<BudgetDashboardContent />} />
+              <Route path="transactions" element={<Transactions />} />
+              <Route path="reports" element={<Reports />} />
+              <Route path="predict-budget" element={<PredictBudget />} />
+              <Route path="*" element={<BudgetDashboardContent />} />
+            </Routes>
+          </Box>
+        </Box>
+      </AppProvider>
+    </DemoProvider>
   );
+}
+
+DashboardLayout.propTypes = {
+  window: PropTypes.func,
 };
 
-export default Dashboard;
+export default DashboardLayout;

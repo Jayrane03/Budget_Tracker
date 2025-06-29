@@ -143,3 +143,7 @@ body {
     flex-direction: column;
   }
 }
+.tab-dash{
+  display: flex;
+  flex-direction: column;
+}

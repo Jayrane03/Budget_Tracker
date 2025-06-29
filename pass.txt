@@ -1,2 +1,57 @@
 username : jayurane32003
 pass : jayrane53
+
+
+const demoTheme = createTheme({
+  cssVariables: { colorSchemeSelector: 'data-toolpad-color-scheme' },
+  colorSchemes: {
+    light: {
+      palette: {
+        mode: 'light',
+        primary: { main: '#0f0c29', contrastText: '#ffffff' },
+        secondary: { main: '#ff6b6b' },
+        background: { default: '#f5f7fb', paper: '#ffffff' },
+        text: { primary: '#1a1a1a', secondary: '#555' },
+      },
+    },
+    dark: {
+      palette: {
+        mode: 'dark',
+        primary: { main: '#08a087', contrastText: '#ffffff' },
+        background: { default: '#121212', paper: '#1e1e1e' },
+        text: { primary: '#ffffff', secondary: '#c9c9c9' },
+      },
+    },
+  },
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'linear-gradient(to right, #00ffd5, #08a087, #24243e)',
+          color: '#ffffff',
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          backgroundImage: 'linear-gradient(to right, #00ffd5, #08a087, #24243e)',
+          color: '#0f0c29',
+        },
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          '&.Mui-selected': {
+            backgroundColor: '#e0f7fa',
+            color: '#0f0c29',
+          },
+        },
+      },
+    },
+  },
+  breakpoints: {
+    values: { xs: 0, sm: 600, md: 900, lg: 1200, xl: 1536 },
+  },
+});

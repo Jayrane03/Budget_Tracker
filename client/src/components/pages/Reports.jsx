@@ -33,11 +33,12 @@ const Reports = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const res = await axios.get(`${config.BASE_URL}/api/transactions`, {
-          headers: {
-            'x-auth-token': localStorage.getItem('token')
-          }
-        });
+       const token = localStorage.getItem('token'); // Token is likely already set by AuthContext Axios defaults
+      const res = await axios.get(`${config.BASE_URL}/api/transactions`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Still good to explicitly pass for this specific fetch, though Axios defaults might cover it.
+        },
+      });
         setTransactions(res.data);
         
         if (res.data.length > 0) {

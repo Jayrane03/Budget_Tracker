@@ -50,9 +50,18 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ bgcolor: 'primary.dark', boxShadow: 3 }}>
+   <AppBar
+      position="static"
+      
+      sx={{
+        background: 'linear-gradient(to right,#08a087, #00ffd5, #24243e)',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+      }}
+    >
+     
       <Toolbar>
         {/* Logo/Brand Name */}
+         <img src="/freepik__budget.png" alt="" height="45px" width="45px"/>
         <Typography
           variant="h6"
           noWrap
@@ -61,30 +70,18 @@ const Navbar = () => {
           sx={{
             flexGrow: 1, // Takes up available space
             textDecoration: 'none',
-            color: 'inherit', // Inherit color from AppBar
+            color: 'ThreeDDarkShadow', // Inherit color from AppBar
             fontWeight: 'bold',
             letterSpacing: 0.5,
+            ml:1,
             mr: 2, // Margin right
           }}
         >
-          BudgetTracker
+          BudgetAI
         </Typography>
 
         {/* Navigation Links (always visible for now) */}
-        <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}> {/* Hide on small screens, show on medium+ */}
-          <Button color="inherit" component={Link} to="/dashboard">
-            Dashboard
-          </Button>
-          <Button color="inherit" component={Link} to="/transactions">
-            Transactions
-          </Button>
-          <Button color="inherit" component={Link} to="/reports">
-            Reports
-          </Button>
-          <Button color="inherit" component={Link} to="/predict-budget">
-            Predict Budget
-          </Button>
-        </Box>
+     
 
         {/* Spacer to push auth buttons to the right */}
         <Box sx={{ flexGrow: 1 }} />
@@ -130,10 +127,10 @@ const Navbar = () => {
           </Box>
         ) : (
           <Box sx={{ display: 'flex', gap: 1 }}>
-            <Button color="inherit" component={Link} to="/login">
+            <Button color="inherit" style={{letterSpacing:'1px'}} component={Link} to="/login">
               Login
             </Button>
-            <Button color="inherit" component={Link} to="/register">
+            <Button color="inherit" style={{letterSpacing:'1px'}} component={Link} to="/register">
               Register
             </Button>
           </Box>

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import config from '../../services/helper';
+
 const PredictBudget = () => {
   const [income, setIncome] = useState(5000);
   const [budgetData, setBudgetData] = useState(null);
@@ -9,8 +10,8 @@ const PredictBudget = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
-    if (user && user.id) {
-      setUserId(user.id);
+    if (user && (user._id || user.id)) {
+      setUserId(user._id || user.id); // handle both MongoDB _id and custom id
     } else {
       setError('User not logged in');
     }
@@ -24,9 +25,24 @@ const PredictBudget = () => {
 
     try {
       setError(null);
+      const token = localStorage.getItem('token');
 
-      const transRes = await axios.get(`${config.BASE_URL}/api/transactions/${userId}`);
-      const transactions = transRes.data.transactions;
+      const endpoint = `${config.BASE_URL}/api/transactions/${userId}`;
+      console.log('🔍 Fetching transactions from:', endpoint);
+
+      const transRes = await axios.get(endpoint, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const transactions = transRes.data;
+
+      if (!transactions || transactions.length === 0) {
+        setError('No transactions found. Please add some to get predictions.');
+        setBudgetData(null);
+        return;
+      }
 
       const res = await axios.post(`${config.PYTHON_SERVER_URL}/api/predict-budget`, {
         income: Number(income),
@@ -35,8 +51,11 @@ const PredictBudget = () => {
 
       setBudgetData(res.data);
     } catch (err) {
-      console.error('Error predicting budget:', err);
-      setError('Failed to fetch budget prediction. Please try again.');
+      console.error('Error predicting budget:', err.response?.data || err.message);
+      setError(
+        err.response?.data?.message ||
+        'Failed to fetch budget prediction. Please try again.'
+      );
       setBudgetData(null);
     }
   };
@@ -122,20 +141,17 @@ const PredictBudget = () => {
       fontWeight: 'bold',
       transition: 'transform 0.2s, box-shadow 0.2s',
     },
-    buttonHover: {
-      backgroundColor: '#2563eb',
-    },
     error: {
       color: '#f87171',
       textAlign: 'center',
       marginTop: '1rem',
     },
     recommendationListItem: {
-      marginBottom: '0.8rem',   
+      marginBottom: '0.8rem',
       padding: '0.5rem',
       borderRadius: '8px',
       backgroundColor: '#334155',
-    }
+    },
   };
 
   return (
@@ -143,21 +159,19 @@ const PredictBudget = () => {
       <h2 style={styles.heading}>🔮 AI Budget Prediction</h2>
 
       <div style={styles.contentRow}>
-        <img
-          src="/budget_ai.jpg"
-          alt="AI Budget"
-          style={styles.image}
-        />
+        <img src="/budget_ai.jpg" alt="AI Budget" style={styles.image} />
 
         {budgetData?.budget_recommendations ? (
           <div style={styles.results}>
             <h3 style={styles.recommendationHeading}>📊 Budget Recommendations</h3>
             <ul style={styles.recommendationList}>
-              {Object.entries(budgetData.budget_recommendations).map(([category, amount]) => (
-                <li key={category} style={styles.recommendationListItem}>
-                  <strong>{category}</strong>: ${amount.toFixed(2)}
-                </li>
-              ))}
+              {Object.entries(budgetData.budget_recommendations).map(
+                ([category, amount]) => (
+                  <li key={category} style={styles.recommendationListItem}>
+                    <strong>{category}</strong>: ${amount.toFixed(2)}
+                  </li>
+                )
+              )}
             </ul>
             <p style={styles.message}>{budgetData.message}</p>
           </div>

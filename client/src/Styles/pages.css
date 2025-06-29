@@ -52,136 +52,258 @@ body {
     margin: 0;
     font-family: 'Poppins', sans-serif; /* Apply the imported font */
     box-sizing: border-box;
-}
-
-/* Login Container - Full Page Background Image */
-.login-container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: url('/login.jpg') center/cover no-repeat; /* Shorthand for background properties */
-    position: relative;
     overflow: hidden;
 }
 
-/* Overlay for Darkening and Opacity */
+
+
+
+
+/* #login {
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  text-align: center;
+  z-index: 100;
+  display:block;
+} */
+/* Fullscreen Container */
+
+.login-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+ 
+  background: radial-gradient(circle at center, #0f0f2d 0%, #000010 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* BudgetScene Canvas Layer */
+.three-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  
+}
+
+/* Optional: Overlay Effect */
 .login-overlay {
-    position: absolute;
-    inset: 0; /* Shorthand for top: 0; right: 0; bottom: 0; left: 0; */
-    background-color: rgba(0, 0, 0, 0.7); /* Darker overlay for better text contrast */
-    z-index: 1; /* Below the form */
+  position: absolute;
+  
+  inset: 0;
+   background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+ 
+  z-index: 1;
+  -webkit-border-radius:20px;
+  -moz-border-radius:20px;
+  -ms-border-radius:20px;
+  -o-border-radius:20px;
 }
 
-/* Login Form Styling */
+/* 3D Frame Edge Glow */
+
+
+/* Shapes */
+.bg-shapes {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+  top: 0;
+  left: 0;
+}
+
+.bg-shapes .shape {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+   box-shadow:
+    0 0 12px rgba(0, 255, 213, 0.7),
+    0 0 30px rgba(0, 255, 213, 0.5),
+    0 0 60px rgba(0, 255, 213, 0.4);
+  background: #000;
+  border-radius: 50%;
+  animation: float 15s linear infinite;
+}
+
+.bg-shapes .shape:nth-child(1) {
+  left: 20%;
+  animation-duration: 12s;
+  width: 40px;
+  height: 40px;
+}
+
+.bg-shapes .shape:nth-child(2) {
+  left: 50%;
+  animation-duration: 18s;
+  width: 25px;
+  height: 25px;
+}
+
+.bg-shapes .shape:nth-child(3) {
+  left: 70%;
+  animation-duration: 20s;
+  width: 35px;
+  height: 35px;
+}
+
+.bg-shapes .shape:nth-child(4) {
+  left: 90%;
+  animation-duration: 10s;
+  width: 20px;
+  height: 20px;
+}
+
+.bg-shapes .shape:nth-child(5) {
+  left: 10%;
+  animation-duration: 14s;
+  width: 30px;
+  height: 30px;
+}
+
+@keyframes float {
+  0% {
+    bottom: -50px;
+    transform: translateX(0) rotate(0deg);
+  }
+  50% {
+    transform: translateX(20px) rotate(180deg);
+  }
+  100% {
+    bottom: 110%;
+    transform: translateX(0) rotate(360deg);
+  }
+}
+
+/* Fade-In Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Login Form */
 .login-form {
-    position: relative;
-    z-index: 2; /* Above the overlay */
-    background-color: rgba(255, 255, 255, 0.08); /* Slightly visible white background */
-    backdrop-filter: blur(10px); /* Frosted glass effect */
-    -webkit-backdrop-filter: blur(10px); /* For Safari support */
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Stronger shadow */
-    border-radius: 20px; /* More rounded corners */
-    padding: 30px 40px; /* Increased padding */
-    width: 100%;
-    max-width: 420px; /* Slightly wider form */
-    border: 1px solid rgba(255, 255, 255, 0.18); /* Subtle border */
-    animation: fadeIn 1s ease-out; /* Animation for form appearance */
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
+  position: relative;
+  z-index: 2;
+  animation: fadeInUp 1s ease forwards;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2rem 2.5rem;
+  border-radius: 18px;
+  backdrop-filter: blur(14px);
+  max-width: 400px;
+  width: 100%;
+  border: 1px solid rgba(0, 255, 213, 0.3); /* light neon border */
+  box-shadow:
+    0 0 10px rgba(0, 255, 213, 0.5),
+    0 0 20px rgba(0, 255, 213, 0.4),
+    0 0 40px rgba(0, 255, 213, 0.3);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* Fade-in Animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.login-form:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 12px rgba(0, 255, 213, 0.7),
+    0 0 30px rgba(0, 255, 213, 0.5),
+    0 0 60px rgba(0, 255, 213, 0.4);
 }
 
-/* Form Title */
+
+/* .login-form:hover {
+  transform: translateY(-2px);
+} */
+
+/* Title */
 .login-title {
-    font-size: 2.2rem; /* Larger title */
-    font-weight: 700; /* Bolder */
-    color: #ffffff;
-    margin-bottom: 30px; /* More space below title */
-    text-align: center;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); /* Subtle text shadow */
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 25px;
+  text-align: center;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
-/* Form Group (Label + Input) */
+/* Form Grouping */
 .form-group {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
-/* Form Label */
 .form-label {
-    display: block;
-    font-size: 0.95rem; /* Slightly larger label text */
-    color: #e0e0e0; /* Lighter grey for labels */
-    margin-bottom: 8px;
-    font-weight: 600; /* Semibold label */
+  display: block;
+  font-size: 0.95rem;
+
+  color: #e0e0e0;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  font-weight: 600;
 }
 
-/* Form Input Fields */
+/* Input Field */
 .form-input {
-    width: 100%;
-    padding: 12px 15px; /* More padding */
-    border-radius: 8px; /* Slightly more rounded inputs */
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border */
-    background-color: rgba(255, 255, 255, 0.15); /* Semi-transparent input background */
-    color: #ffffff; /* White text for input */
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    box-sizing: border-box; /* Crucial for width: 100% */
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
-.form-input:focus {
-    outline: none;
-    border-color: #8a2be2; /* Blue-violet focus border */
-    box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.4); /* Glowing effect on focus */
-    background-color: rgba(255, 255, 255, 0.25); /* Slightly less transparent on focus */
-}
+/* .form-input:focus {
+  outline: none;
+  border-color: #8a2be2;
+  box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.4);
+  background-color: rgba(255, 255, 255, 0.22);
+} */
 
-/* Placeholder color for dark theme */
-.form-input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-}
+/* .form-input::placeholder {
+  color: rgba(255, 255, 255, 0.65);
+} */
 
 /* Login Button */
 .login-button {
-    width: 100%;
-    background: linear-gradient(135deg, #8a2be2 0%, #4f00bc 100%); /* Purple gradient */
-    color: #ffffff;
-    font-weight: 600; /* Semibold */
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.1rem; /* Larger font size */
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Shadow for button */
+  width: 100%;
+  background: linear-gradient(to right, #00ffd5, #08a087, #24243e);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 13px 22px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .login-button:hover {
-    background: linear-gradient(135deg, #9b4dff 0%, #5f00e0 100%); /* Slightly lighter on hover */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
-    transform: translateY(-2px); /* Slight lift effect */
+  background: linear-gradient(135deg, #24243e, #08a087, #00ffd5);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.5);
+  transform: translateY(-2px);
 }
 
-/* Register Link Text */
+/* Register Link */
 .login-register-text {
-    font-size: 0.9rem;
-    color: #d0d0d0; /* Lighter grey for surrounding text */
-    text-align: center;
-    margin-top: 25px;
+  font-size: 0.9rem;
+  color: #d0d0d0;
+  text-align: center;
+  margin-top: 25px;
 }
 
 .register-link {
-    color: #a0a0ff; /* Light blue for the link */
+    color: #00ffd5; /* Light blue for the link */
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
@@ -189,7 +311,7 @@ body {
 
 .register-link:hover {
     text-decoration: underline;
-    color: #c0c0ff; /* Lighter blue on hover */
+    color: #59e7cf;
 }
 
 /* Responsive Adjustments */
@@ -220,6 +342,19 @@ body {
         font-size: 0.95rem;
     }
 }
+.gold_Coin{
+   animation: fadeInUp 1s ease forwards;
+  height: 320px;
+  width: 320px;
+  border: 30px solid rgb(5, 5, 4);
+  background-color: #00ffd5;
+  position: absolute;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
 
 
 /* Register */
@@ -245,13 +380,20 @@ body {
 .register-image {
   flex: 1 1 40%;
   text-align: center;
+  height: 300px;
+  margin-bottom: 20px;
+  /* width:200px; */
+  /* background-color: white; */
 }
 
 .register-image img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+background-color: white;
+  height: 400px;
+  width: 400px;
+  
+  
+  /* border-radius: 12px; */
+  /* box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6); */
 }
 
 .register-form {

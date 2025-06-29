@@ -10,7 +10,7 @@ import { AuthContext } from '../AuthContext';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
   CircularProgress, Box, Typography, Button, Select, MenuItem, FormControl, InputLabel,
-  useTheme, // This hook correctly accesses the theme
+  // useTheme, // This hook correctly accesses the theme
 } from '@mui/material';
 
 import { styled } from '@mui/system'; // Correct import for styled
@@ -28,7 +28,7 @@ const Transactions = () => {
   const [loading, setLoading] = useState(true);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [filters, setFilters] = useState({ type: 'all', category: 'all' });
-  const theme = useTheme(); // Access the current theme
+  // const theme = useTheme(); // Access the current theme
 
   // Use a specific useEffect for fetching based on authentication status
   useEffect(() => {
@@ -52,6 +52,7 @@ const Transactions = () => {
         },
       });
       setTransactions(res.data);
+      console.log('Fetched transactions:', res.data); // Debug log to see fetched data
     } catch (err) {
       console.error('Error fetching transactions', err.response?.data || err.message);
       // Handle unauthorized specifically, e.g., force logout if token expired
@@ -199,7 +200,7 @@ const Transactions = () => {
                   <TableCell align="center">
                     <Button
                       variant="outlined"
-                      color="primary"
+                      color="secondary"
                       size="small"
                       onClick={() => setSelectedTransaction(t)}
                       sx={{ mr: 1 }}

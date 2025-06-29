@@ -15,8 +15,9 @@
 body {
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
+  overflow: scroll ;
   line-height: 1.6;
-  background-color: #0f172a;
+  /* background-color: #0f172a; */
   color: var(--dark-color);
 }
 
@@ -42,24 +43,24 @@ ul {
   list-style: none;
 }
 
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 1rem;
-}
+
 
 /* Navbar */
 .navbar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 3;
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.7rem 2rem;
-  background-color: var(--primary-color);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px);
   color: #fff;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  text-align: center;
+  font-weight: bold;
 }
+
 
 .navbar h1 {
   font-size: 1.5rem;

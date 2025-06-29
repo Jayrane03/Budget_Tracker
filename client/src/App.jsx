@@ -1,34 +1,40 @@
 // src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-// FIX: Import AuthContext along with AuthProvider, and confirm the path
-import { AuthContext, AuthProvider } from './components/AuthContext'; // Corrected import path
-
-import { ThemeProvider, CssBaseline ,CircularProgress } from '@mui/material';
-import darkTheme from './theme'; // Make sure this path is correct
-
-import Navbar from './components/layout/Navbar';
+import { AuthProvider, AuthContext } from './components/AuthContext';
+import { ThemeProvider, CssBaseline, CircularProgress, Box, Typography } from '@mui/material';
+import darkTheme from './theme';
+import './index.css'; // Ensure this is imported to apply global styles
 import Home from './components/pages/Home';
 import Login from './components/pages/Login';
 import Register from './components/pages/Register';
-import Dashboard from './components/pages/Dashboard';
-import Transactions from './components/pages/Transaction'; // Changed to 'Transactions' (was 'Transaction')
-import Reports from './components/pages/Reports';
-import PredictBudget from './components/pages/BudgetPrediction';
+import DashboardLayoutBasic from '../src/components/pages/Dashboard';
 
-import '../src/Styles/App.css';
-
-// Your ProtectedRoute component
 const ProtectedRoute = ({ children }) => {
-  // AuthContext is now correctly imported and available here
   const { isAuthenticated, loading } = React.useContext(AuthContext);
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
-        <CircularProgress /> {/* Use MUI CircularProgress for consistency */}
-        <p style={{ marginTop: '10px', color: 'text.secondary' }}>Loading authentication...</p>
-      </div>
+     <>
+     
+      <Box
+        sx={{
+          position: 'fixed',
+          inset: 0,
+          bgcolor: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: theme => theme.zIndex.tooltip,
+        }}
+      >
+           <span className="loader"></span>
+        <Typography variant="h6" sx={{ mt: 2, color: 'primary.contrastText' }}>
+          Authenticating…
+        </Typography>
+      </Box>
+     </>
     );
   }
 
@@ -37,24 +43,17 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
   return (
-    // Make sure ThemeProvider is the outermost wrapper around your content
-    <ThemeProvider theme={darkTheme}> 
-      <CssBaseline /> {/* Apply global Material-UI styles */}
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
       <Router>
-        <AuthProvider> {/* AuthProvider should be inside ThemeProvider */}
-          <Navbar />
-          <div className="container">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              <Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
-              <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
-              <Route path="/predict-budget" element={<ProtectedRoute><PredictBudget /></ProtectedRoute>} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </div>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/dashboard/*" element={<ProtectedRoute><DashboardLayoutBasic /></ProtectedRoute>} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </AuthProvider>
       </Router>
     </ThemeProvider>

@@ -13,13 +13,16 @@ router.get('/user', auth, async (req, res) => {
     if (!user) return res.status(404).json({ msg: 'User not found' });
 
     res.json({
-      name: user.name,
-      email: user.email,
-      username: user.username || user.name,
+      user: {
+        name: user.name,
+        email: user.email,
+        username: user.username || user.name,
+      },
     });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 });
+
 module.exports = router;

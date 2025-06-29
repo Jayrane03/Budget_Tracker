@@ -1,0 +1,55 @@
+💸 BudgetAI
+BudgetAI is a smart, AI-powered personal finance dashboard that helps users manage their budgets, analyze spending habits, and gain real-time insights into their financial health. With modern charts, transaction tracking, and AI-driven reports, BudgetAI is your all-in-one solution for financial control.
+
+🚀 Features
+🔐 User Authentication
+Secure Login and Register system using JWT-based authentication.
+
+🧠 AI Insights
+Get intelligent suggestions and financial analysis with integrated AI models. Personalized budget tips and smart warnings help improve spending habits.
+
+📊 Reports
+Generate categorized monthly or custom range financial reports to understand income vs expenses, category-wise spending, and more.
+
+🧾 Transaction List
+View, add, edit, and delete your income and expense transactions. Fully searchable and filterable.
+
+📈 Charts and Graphs
+Interactive and visually appealing:
+
+Bar Chart (monthly expenses)
+
+Doughnut Chart (category-wise spending)
+
+Pie Chart (income vs expense)
+
+Line Charts (trends over time)
+
+🏠 Dashboard
+A clean, responsive dashboard showing:
+
+Total balance
+
+Total income & expense
+
+Key statistics
+
+Mini charts and recent transactions
+
+📂 Tech Stack
+Frontend: React.js + Context API
+
+Styling: Tailwind CSS / MUI (Material UI)
+
+Authentication: JWT (JSON Web Token)
+
+Backend: Node.js + Express
+
+Database: MongoDB (Mongoose ODM)
+
+AI Integration: OpenAI (or custom ML models)
+
+Charts: Chart.js / Recharts
+
+Deployment: Render / Vercel / Netlify
+
