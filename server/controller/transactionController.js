@@ -77,6 +77,17 @@ exports.deleteTransaction = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+exports.deleteAllTransactions = async (req, res) => {
+try {
+  await Transaction.deleteMany({ user: req.user.id });
+  res.json({ msg: 'All transactions deleted' });
+  
+} catch (error) {
+  console.error(error.message);   
+  res.status(500).send('Server error');
+}
+
+}
 
 exports.categorySummary = async (req, res) => {
   try {

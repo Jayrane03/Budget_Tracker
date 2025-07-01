@@ -41,7 +41,9 @@ export const AuthProvider = ({ children }) => {
 
   // Run on initial component mount to check for token
   useEffect(() => {
-    loadUser();
+   setTimeout(() => {
+      loadUser();
+    }, 1000); // Simulate a delay for loading state
   }, [loadUser]); // Dependency array includes loadUser to satisfy useCallback
 
   // Login function

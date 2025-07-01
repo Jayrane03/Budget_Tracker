@@ -148,24 +148,41 @@ def analyze_spending():
 
 @app.route('/api/predict-budget', methods=['POST'])
 def predict_budget():
-    """Predict and recommend budget allocations based on spending patterns"""
-    data = request.json
-    transactions = data.get('transactions', [])
-    income = data.get('income', 0)
+    """Predict and recommend budget allocations based on spending patterns."""
+    try:
+        data = request.get_json()
 
-    if not transactions:
-        return jsonify({'error': 'No transaction data provided'})
+        transactions = data.get('transactions', [])
+        income = float(data.get('income', 0))
 
-    df = pd.DataFrame(transactions)
-    df['date'] = pd.to_datetime(df['date'])
-    df['amount_abs'] = df['amount'].apply(lambda x: abs(x))
-    expenses = df[df['type'] == 'expense']
+        if not transactions or not isinstance(transactions, list):
+            return jsonify({'error': 'No transaction data provided'}), 400
 
-    if 'category' in expenses.columns and not expenses.empty:
+        df = pd.DataFrame(transactions)
+
+        # Ensure required columns exist
+        if not {'amount', 'type', 'date'}.issubset(df.columns):
+            return jsonify({'error': 'Invalid transaction format'}), 400
+
+        df['date'] = pd.to_datetime(df['date'], errors='coerce')
+        df['amount_abs'] = df['amount'].apply(lambda x: abs(float(x)))
+
+        # Filter only expenses
+        expenses = df[df['type'].str.lower() == 'expense']
+
+        if 'category' not in expenses.columns or expenses.empty:
+            return jsonify({'error': 'Not enough category data for budget prediction'}), 400
+
+        # Group spending by category
         category_spending = expenses.groupby('category')['amount_abs'].sum().to_dict()
         total_spending = sum(category_spending.values())
-        category_percentages = {cat: (amt / total_spending) * 100 for cat, amt in category_spending.items()}
 
+        # Calculate category-wise spending percentage
+        category_percentages = {
+            cat: (amt / total_spending) * 100 for cat, amt in category_spending.items()
+        }
+
+        # Budgeting logic
         budget_base = income if income > 0 else total_spending
         savings_rate = 0.1 if income > 0 else 0
         budget_available = budget_base * (1 - savings_rate)
@@ -186,8 +203,8 @@ def predict_budget():
             'message': f"Budget recommendations based on your {'income' if income > 0 else 'historical spending'}"
         })
 
-    return jsonify({'error': 'Not enough category data for budget prediction'})
-
-
+    except Exception as e:
+        return jsonify({'error': 'Server error while predicting budget', 'details': str(e)}), 500
+    
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

@@ -35,9 +35,14 @@ const Navbar = () => {
   const handleLogout = () => {
     logout(); // Call the logout function from AuthContext
     handleMenuClose(); // Close the menu
-    navigate('/login'); // Redirect to login page after logout
+    navigate('/'); // Redirect to login page after logout
   };
-
+ const goToDashboard =()=>{
+  navigate('/dashboard'); // Redirect to dashboard
+ }
+ const gotoHome = () => {
+  navigate('/'); // Redirect to home page
+ }
   // Get first letter of user's name or email for avatar
   const getAvatarInitials = () => {
     if (user?.name) {
@@ -122,7 +127,12 @@ const Navbar = () => {
               open={isMenuOpen}
               onClose={handleMenuClose}
             >
-              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+    
+              <MenuItem onClick={goToDashboard}>Dashboard</MenuItem>
+              <MenuItem onClick={gotoHome}>Home</MenuItem>
+            <MenuItem  sx={{
+              backgroundColor: '#f44336',
+            }}  onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </Box>
         ) : (

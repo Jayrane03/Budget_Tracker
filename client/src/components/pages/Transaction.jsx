@@ -1,4 +1,3 @@
-// File: components/Transactions.jsx (No changes needed if ThemeProvider is correct)
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import config from '../../services/helper';
@@ -6,81 +5,94 @@ import EditTransactionModal from '../model/EditTransactionModal';
 import { CSVLink } from 'react-csv';
 import { AuthContext } from '../AuthContext';
 
-// Material-UI Imports
+import ClearAllIcon from '@mui/icons-material/ClearAll';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
   CircularProgress, Box, Typography, Button, Select, MenuItem, FormControl, InputLabel,
-  // useTheme, // This hook correctly accesses the theme
+  Alert, Snackbar, Dialog, DialogTitle, DialogContent, DialogContentText,
+  DialogActions
 } from '@mui/material';
 
-import { styled } from '@mui/system'; // Correct import for styled
+import { styled } from '@mui/system';
 
-// Styled TableCell for income/expense colors
-// This is the line that caused the error if theme is undefined
 const AmountTableCell = styled(TableCell)(({ theme, type }) => ({
   color: type === 'expense' ? theme.palette.error.main : theme.palette.success.main,
   fontWeight: 'bold',
 }));
 
 const Transactions = () => {
-  const { isAuthenticated, loading: authLoading } = useContext(AuthContext); // Use AuthContext
+  const { isAuthenticated, loading: authLoading } = useContext(AuthContext);
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [filters, setFilters] = useState({ type: 'all', category: 'all' });
-  // const theme = useTheme(); // Access the current theme
 
-  // Use a specific useEffect for fetching based on authentication status
+  const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
+
+  const [confirmDialog, setConfirmDialog] = useState({
+    open: false,
+    title: '',
+    content: '',
+    onConfirm: () => {},
+  });
+
+  const showAlert = (message, severity = 'success') => {
+    setAlert({ open: true, message, severity });
+  };
+
+  const handleCloseAlert = () => {
+    setAlert({ ...alert, open: false });
+  };
+
   useEffect(() => {
-    // Only fetch if authenticated and authLoading is false
     if (!authLoading && isAuthenticated) {
       fetchTransactions();
     } else if (!authLoading && !isAuthenticated) {
-      // If not authenticated, stop loading and clear transactions
       setLoading(false);
       setTransactions([]);
     }
-  }, [isAuthenticated, authLoading]); // Depend on authentication state
+  }, [isAuthenticated, authLoading]);
 
   const fetchTransactions = async () => {
-    setLoading(true); // Set loading true when starting fetch
+    setLoading(true);
     try {
-      const token = localStorage.getItem('token'); // Token is likely already set by AuthContext Axios defaults
+      const token = localStorage.getItem('token');
       const res = await axios.get(`${config.BASE_URL}/api/transactions`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Still good to explicitly pass for this specific fetch, though Axios defaults might cover it.
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       setTransactions(res.data);
-      console.log('Fetched transactions:', res.data); // Debug log to see fetched data
     } catch (err) {
       console.error('Error fetching transactions', err.response?.data || err.message);
-      // Handle unauthorized specifically, e.g., force logout if token expired
-      if (err.response && err.response.status === 401) {
-        // You might want to trigger logout here if the token is truly invalid
-        // logout(); // Uncomment if you want to force logout on API 401
-      }
     } finally {
       setLoading(false);
     }
   };
 
   const deleteTransaction = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this transaction?')) {
-      return;
-    }
+    const token = localStorage.getItem('token');
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`${config.BASE_URL}/api/transactions/${id}`, { // Use config.BASE_URL
-        headers: { Authorization: `Bearer ${token}` }, // Use Authorization header
+      await axios.delete(`${config.BASE_URL}/api/transactions/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-      // Filter out the deleted transaction
       setTransactions(transactions.filter((t) => t._id !== id));
-      // Optionally re-fetch to ensure data consistency
-      // fetchTransactions();
+      showAlert('Transaction deleted successfully.', 'success');
     } catch (err) {
-      console.error('Error deleting transaction', err.response?.data || err.message);
-      alert('Failed to delete transaction. Please try again.'); // User feedback
+      console.error('Error deleting transaction', err);
+      showAlert('Failed to delete transaction.', 'error');
+    }
+  };
+
+  const clearTransactions = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      await axios.delete(`${config.BASE_URL}/api/transactions/clear`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setTransactions([]);
+      showAlert('All transactions cleared successfully.', 'success');
+    } catch (err) {
+      console.error('Error clearing transactions:', err);
+      showAlert('Failed to clear transactions.', 'error');
     }
   };
 
@@ -88,14 +100,11 @@ const Transactions = () => {
     setFilters({ ...filters, [event.target.name]: event.target.value });
   };
 
-  const filteredTransactions = transactions.filter((t) => {
-    return (
-      (filters.type === 'all' || t.type === filters.type) &&
-      (filters.category === 'all' || t.category === filters.category)
-    );
-  });
+  const filteredTransactions = transactions.filter((t) =>
+    (filters.type === 'all' || t.type === filters.type) &&
+    (filters.category === 'all' || t.category === filters.category)
+  );
 
-  // Extract unique categories for filter dropdown
   const categories = [...new Set(transactions.map((t) => t.category))].sort();
 
   const formatDate = (dateStr) => new Date(dateStr).toLocaleDateString();
@@ -119,7 +128,7 @@ const Transactions = () => {
 
   return (
     <Box sx={{ p: 3, maxWidth: 1200, margin: '20px auto', bgcolor: 'background.paper', borderRadius: 2, boxShadow: 3 }}>
-      <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ color: 'primary.main', mb: 4 }}>
+      <Typography variant="h4" gutterBottom align="center" sx={{ color: 'primary.main', mb: 4 }}>
         Transaction History
       </Typography>
 
@@ -156,12 +165,31 @@ const Transactions = () => {
         <CSVLink
           data={filteredTransactions}
           filename="transactions.csv"
-          className="csv-btn" // Keep your custom CSS class if you want specific CSV button styling
+          className="csv-btn"
         >
           <Button variant="contained" color="primary" sx={{ height: '100%' }}>
             Export CSV
           </Button>
         </CSVLink>
+
+        <Button
+          variant="contained"
+          color="warning"
+          sx={{ height: '100%', marginTop: '10px' }}
+          onClick={() =>
+            setConfirmDialog({
+              open: true,
+              title: 'Clear All Transactions?',
+              content: 'This will permanently delete all your transactions.',
+              onConfirm: () => {
+                clearTransactions();
+                setConfirmDialog({ ...confirmDialog, open: false });
+              },
+            })
+          }
+        >
+          <ClearAllIcon /> Clear Transactions
+        </Button>
       </Box>
 
       {loading ? (
@@ -175,7 +203,7 @@ const Transactions = () => {
         </Typography>
       ) : (
         <TableContainer component={Paper} elevation={5}>
-          <Table sx={{ minWidth: 650 }} aria-label="transactions table">
+          <Table sx={{ minWidth: 650 }}>
             <TableHead sx={{ bgcolor: 'primary.dark' }}>
               <TableRow>
                 <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Date</TableCell>
@@ -187,11 +215,8 @@ const Transactions = () => {
             </TableHead>
             <TableBody>
               {filteredTransactions.map((t) => (
-                <TableRow
-                  key={t._id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:nth-of-type(odd)': { backgroundColor: 'action.hover' } }}
-                >
-                  <TableCell component="th" scope="row">{formatDate(t.date)}</TableCell>
+                <TableRow key={t._id} sx={{ '&:nth-of-type(odd)': { backgroundColor: 'action.hover' } }}>
+                  <TableCell>{formatDate(t.date)}</TableCell>
                   <TableCell>{t.description}</TableCell>
                   <TableCell>{t.category}</TableCell>
                   <AmountTableCell type={t.type} align="right">
@@ -211,7 +236,17 @@ const Transactions = () => {
                       variant="outlined"
                       color="error"
                       size="small"
-                      onClick={() => deleteTransaction(t._id)}
+                      onClick={() =>
+                        setConfirmDialog({
+                          open: true,
+                          title: 'Delete Transaction?',
+                          content: 'Are you sure you want to delete this transaction?',
+                          onConfirm: () => {
+                            deleteTransaction(t._id);
+                            setConfirmDialog({ ...confirmDialog, open: false });
+                          },
+                        })
+                      }
                     >
                       Delete
                     </Button>
@@ -227,9 +262,35 @@ const Transactions = () => {
         <EditTransactionModal
           transaction={selectedTransaction}
           onClose={() => setSelectedTransaction(null)}
-          onSave={fetchTransactions} // Pass fetchTransactions to refresh data after edit
+          onSave={fetchTransactions}
         />
       )}
+
+      {/* Snackbar Alert */}
+      <Snackbar open={alert.open} autoHideDuration={3000} onClose={handleCloseAlert}>
+        <Alert onClose={handleCloseAlert} severity={alert.severity} variant="filled">
+          {alert.message}
+        </Alert>
+      </Snackbar>
+
+      {/* Confirmation Dialog */}
+      <Dialog
+        open={confirmDialog.open}
+        onClose={() => setConfirmDialog({ ...confirmDialog, open: false })}
+      >
+        <DialogTitle>{confirmDialog.title}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{confirmDialog.content}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmDialog({ ...confirmDialog, open: false })}>
+            Cancel
+          </Button>
+          <Button color="error" onClick={confirmDialog.onConfirm}>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

@@ -6,7 +6,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
-
+import SavingsIcon from '@mui/icons-material/Savings';
 import { createTheme } from '@mui/material/styles';
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { DemoProvider } from '@toolpad/core/internal';
@@ -15,6 +15,7 @@ import { Box, Tabs, Tab } from '@mui/material';
 import BudgetDashboardContent from '../layout/BudgetDashboardContent';
 import Transactions from '../pages/Transaction';
 import Reports from '../pages/Reports';
+import Budget from '../layout/Budget';
 import PredictBudget from '../pages/BudgetPrediction';
 
 // Custom dark theme (keep your existing one if needed)
@@ -117,6 +118,7 @@ function DashboardLayout(props) {
             }}
           >
             <Tab label="Dashboard" value="/" icon={<DashboardIcon />} iconPosition="start" />
+            <Tab label="Budget" value="/budget" icon={<SavingsIcon />} iconPosition="start" />
             <Tab label="Transactions" value="/transactions" icon={<ShoppingCartIcon />} iconPosition="start" />
             <Tab label="Reports" value="/reports" icon={<BarChartIcon />} iconPosition="start" />
             <Tab label="Predict Budget" value="/predict-budget" icon={<AutoGraphIcon />} iconPosition="start" />
@@ -126,6 +128,7 @@ function DashboardLayout(props) {
           <Box sx={{ flexGrow: 1, p: 3, overflowY: 'auto' }}>
             <Routes>
               <Route path="/" element={<BudgetDashboardContent />} />
+                  <Route path="budget" element={<Budget />} />
               <Route path="transactions" element={<Transactions />} />
               <Route path="reports" element={<Reports />} />
               <Route path="predict-budget" element={<PredictBudget />} />

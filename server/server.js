@@ -11,7 +11,7 @@ const authRoutes = require('./routes/authRoutes');
 const transactionRoutes = require('./routes/transRoutes');
 const predictRoutes = require('./routes/predict');
 const analyzeRoute = require('./routes/analys');
-
+const budgetRoutes = require('./routes/budgetRoutes');
 const app = express();
 
 // Connect to MongoDB
@@ -42,6 +42,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/analyze', analyzeRoute);
 app.use('/api/predict', predictRoutes);
+app.use('/api/budget',budgetRoutes);
 
 // Health check route
 app.get('/', (req, res) => {

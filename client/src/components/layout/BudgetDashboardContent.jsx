@@ -109,7 +109,7 @@ export default function BudgetDashboardContent() {
     datasets: [{
       label: 'Expenses',
       data: Object.values(expenseCategories),
-      backgroundColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40'],
+      backgroundColor: ['#FF6384','#36A2EB','#66bb6a','#FFCE56','#4BC0C0','#9966FF','#FF9F40'],
       borderWidth: 1,
     }],
   };
@@ -119,7 +119,8 @@ export default function BudgetDashboardContent() {
     datasets: [{
       label: 'Income',
       data: Object.values(incomeCategories),
-      backgroundColor: ['#4caf50','#81c784','#66bb6a','#388e3c','#2e7d32','#1b5e20'],
+      // backgroundColor: ['#4caf50','#81c784','#66bb6a','#388e3c','#2e7d32','#1b5e20'],
+         backgroundColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40','#1b5e20'],
       borderWidth: 1,
     }],
   };
@@ -191,11 +192,11 @@ export default function BudgetDashboardContent() {
             </Box>
           </Paper>
 
-          <Paper sx={{ gridColumn: '1 / -1', p: 2, borderRadius: 4, background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(6px)', display: 'flex', justifyContent: 'center' }}>
+          {/* <Paper sx={{ gridColumn: '1 / -1', p: 2, borderRadius: 4, background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(6px)', display: 'flex', justifyContent: 'center' }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateCalendar value={selectedDate} onChange={setSelectedDate} disableFuture />
             </LocalizationProvider>
-          </Paper>
+          </Paper> */}
         </Box>
       )}
     </Box>
