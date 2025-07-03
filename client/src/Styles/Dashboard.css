@@ -1,137 +1,20 @@
-body {
-  background: #0d1117;
-  color: #f0f6fc;
-  font-family: 'Segoe UI', sans-serif;
-  margin: 0;
+.sidebar-logo {
+  display: none;
+  height: 60px;
+  margin-bottom: 16px;
 }
 
-.dashboard {
-  position: relative;
-  overflow: hidden;
+@media (max-width: 600px) {
+  .sidebar-logo {
+    display: block;
+  }
 }
 
-.dashboard::before {
-  content: '';
-  position: absolute;
-  top: -10%;
-  right: -10%;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, #58a6ff33, transparent);
-  filter: blur(80px);
-  z-index: 0;
+.logo-text{
+  display: block;
 }
-
-.dashboard h1 {
-  font-size: 2rem;
-  color: #58a6ff;
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.dashboard-content {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.summary-cards {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.card {
-  flex: 1 1 30%;
-  background-color: #161b22;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-  text-align: center;
-  transition: transform 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-.card h3 {
-  margin: 0;
-  font-size: 1rem;
-  color: #8b949e;
-}
-
-.card h2 {
-  font-size: 1.8rem;
-  margin-top: 0.5rem;
-  color: #c9d1d9;
-}
-
-.card.income {
-  border-left: 4px solid #3fb950;
-}
-
-.card.expense {
-  border-left: 4px solid #f85149;
-}
-
-.card.balance {
-  border-left: 4px solid #58a6ff;
-}
-
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
-.chart-container, .insights-container {
-  background-color: #161b22;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-}
-
-.chart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.chart-header h2 {
-  font-size: 1.2rem;
-  color: #58a6ff;
-}
-
-.chart-select {
-  background-color: #21262d;
-  color: #c9d1d9;
-  border: 1px solid #30363d;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
-}
-
-.insights-container h2 {
-  color: #58a6ff;
-  margin-bottom: 1rem;
-}
-
-.insights-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.insights-list li {
-  background-color: #0d1117;
-  padding: 0.8rem;
-  margin-bottom: 0.5rem;
-  border-left: 4px solid #8b949e;
-  border-radius: 6px;
-  font-size: 0.9rem;
+.logo-nav {
+display: block;
 }
 
 @media (max-width: 768px) {
@@ -142,6 +25,13 @@ body {
   .summary-cards {
     flex-direction: column;
   }
+  
+.logo-text{
+  display: none;
+}
+.logo-nav {
+display: none;
+}
 }
 .tab-dash{
   display: flex;

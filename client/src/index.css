@@ -29,10 +29,14 @@
           animation: 1s spin linear infinite;
         }
         .loader:after {
-          color: #FF3D00;
+          color: #00ffd5;
           transform: rotateY(70deg);
           animation-delay: .4s;
-        }
+          -webkit-transform: rotateY(70deg);
+          -moz-transform: rotateY(70deg);
+          -ms-transform: rotateY(70deg);
+          -o-transform: rotateY(70deg);
+}
 
       @keyframes rotate {
         0% {

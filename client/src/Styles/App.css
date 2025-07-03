@@ -15,7 +15,7 @@
 body {
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
-  overflow: scroll ;
+  /* overflow:  ; */
   line-height: 1.6;
   /* background-color: #0f172a; */
   color: var(--dark-color);

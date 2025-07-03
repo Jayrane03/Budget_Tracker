@@ -1,89 +1,59 @@
-import { useState , useEffect} from 'react';
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  MenuItem,
-  Grid,
-  Paper,
-  IconButton,
-  Divider,
+  Box, Typography, TextField, Button, MenuItem, Grid, Paper,
+  IconButton, Divider, Table, TableBody, TableCell, TableContainer,
+  TableHead, TableRow, Alert
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@mui/material';
+import config from "../../services/helper";
+import { AuthContext } from '../AuthContext';
 
-import config from "../../services/helper"; // Adjust the path as necessary 
 const categoryOptions = [
-  'Food',
-  'Rent',
-  'Transportation',
-  'Utilities',
-  'Entertainment',
-  'Savings',
-  'Healthcare',
-  'Shopping',
+  'Food', 'Rent', 'Transportation', 'Utilities', 'Entertainment',
+  'Savings', 'Healthcare', 'Shopping', 'Loans', 'Insurance', 'Education', 'Miscellaneous'
 ];
-import {AuthContext} from '../AuthContext'; // Adjust the path as necessary
+
 const Budget = () => {
-    const { isAuthenticated, loading: authLoading } = useContext(AuthContext);
+  const { isAuthenticated, loading: authLoading } = useContext(AuthContext);
+
   const [month, setMonth] = useState(dayjs());
-   const fetchBudget = async () => {
-    const token = localStorage.getItem('token');
+  const [totalBudget, setTotalBudget] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('Rent');
+  const [categoryLimit, setCategoryLimit] = useState('');
+  const [existingBudgetId, setExistingBudgetId] = useState(null);
+  const [categoryLimits, setCategoryLimits] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) fetchBudget();
+  }, [isAuthenticated, month, authLoading]);
+
+  const fetchBudget = async () => {
     try {
+      const token = localStorage.getItem('token');
       const res = await fetch(`${config.BASE_URL}/api/budget?month=${month.format('YYYY-MM')}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (res.ok) {
         const data = await res.json();
-        if (data) {
-          setTotalBudget(data.totalBudget.toString());
-          setCategoryLimits(data.categoryLimits || []);
-          setExistingBudgetId(data._id); // Save ID for update
-        }
+        setTotalBudget(data.totalBudget?.toString() || '');
+        setCategoryLimits(data.categoryLimits || []);
+        setExistingBudgetId(data._id || null);
       }
     } catch (err) {
       console.error('❌ Error fetching budget:', err);
     }
   };
-  useEffect(() => {
-      if (!authLoading && isAuthenticated) {
-        fetchBudget();
-      } else if (!authLoading && !isAuthenticated) {
-      
-        // setTransactions([]);
-      }
-    }, [isAuthenticated, month, authLoading]); // Fetch budget when month changes or auth state changes
-  const [totalBudget, setTotalBudget] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('Rent');
-  const [categoryLimit, setCategoryLimit] = useState('');
-  const [existingBudgetId, setExistingBudgetId] = useState(null); // For edit mode
 
-  const [categoryLimits, setCategoryLimits] = useState([]);
-// useEffect(() => {
- 
-
-//   fetchBudget();
-// }, [month]); // Fetch when month change
   const handleAddCategory = () => {
     if (selectedCategory && categoryLimit) {
-      setCategoryLimits(prev => [
-        ...prev.filter(item => item.category !== selectedCategory),
-        { category: selectedCategory, amount: parseFloat(categoryLimit) },
-      ]);
+      setCategoryLimits(prev =>
+        [...prev.filter(item => item.category !== selectedCategory),
+         { category: selectedCategory, amount: parseFloat(categoryLimit) }]
+      );
       setCategoryLimit('');
       setSelectedCategory('');
     }
@@ -93,36 +63,36 @@ const Budget = () => {
     setCategoryLimits(prev => prev.filter(item => item.category !== categoryToRemove));
   };
 
-const handleSaveBudget = async () => {
-  const token = localStorage.getItem('token');
-  const payload = {
-    month: month.format('YYYY-MM'),
-    totalBudget: parseFloat(totalBudget),
-    categoryLimits,
+  const handleSaveBudget = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const payload = {
+        month: month.format('YYYY-MM'),
+        totalBudget: parseFloat(totalBudget),
+        categoryLimits,
+      };
+      const method = existingBudgetId ? 'PUT' : 'POST';
+      const url = existingBudgetId
+        ? `${config.BASE_URL}/api/budget/${existingBudgetId}`
+        : `${config.BASE_URL}/api/budget`;
+
+      const res = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      console.log(`✅ Budget ${existingBudgetId ? 'updated' : 'saved'}:`, data);
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000);
+    } catch (err) {
+      console.error('❌ Error saving budget:', err);
+    }
   };
-
-  const method = existingBudgetId ? 'PUT' : 'POST';
-  const url = existingBudgetId
-    ? `${config.BASE_URL}/api/budget/${existingBudgetId}`
-    : `${config.BASE_URL}/api/budget`;
-
-  try {
-    const res = await fetch(url, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const data = await res.json();
-    console.log(`✅ Budget ${existingBudgetId ? 'updated' : 'saved'}:`, data);
-  } catch (err) {
-    console.error('❌ Error saving budget:', err);
-  }
-};
-
 
   const styles = {
     container: {
@@ -140,7 +110,6 @@ const handleSaveBudget = async () => {
       textShadow: '0 0 6px rgba(56,189,248,0.5)',
     },
     paper: {
-      // background: 'linear-gradient(95deg,#24243e, #00ffd5, #4141c2)',
       padding: '1.5rem',
       borderRadius: '12px',
       marginBottom: '2rem',
@@ -159,7 +128,6 @@ const handleSaveBudget = async () => {
       fontWeight: 'bold',
       borderRadius: '8px',
       padding: '0.6rem',
-      transition: 'all 0.2s ease-in-out',
     },
     saveButton: {
       backgroundColor: '#00ffd5',
@@ -169,23 +137,21 @@ const handleSaveBudget = async () => {
       fontSize: '1rem',
       borderRadius: '8px',
       display: 'block',
-      margin: 'auto',
-      marginTop: '1rem',
-    },
-    categoryItem: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: '0.5rem 0',
-      borderBottom: '1px solid #00ffd5',
+      margin: '50px auto',
     },
     table_cell: {
-      fontSize:"20px"   
-    }
+      fontSize: '16px',
+    },
   };
 
   return (
     <Box sx={styles.container}>
+      {showAlert && (
+        <Alert severity="success" variant="filled" sx={{ width: '80%', margin: 'auto', mb: 2 }}>
+          ✅ Budget {existingBudgetId ? 'updated' : 'saved'} successfully!
+        </Alert>
+      )}
+
       <Typography style={styles.title}>📅 Set Monthly Budget</Typography>
 
       <Paper sx={styles.paper}>
@@ -199,19 +165,15 @@ const handleSaveBudget = async () => {
               slotProps={{ textField: { fullWidth: true } }}
             />
           </Grid>
-
           <Grid item xs={12} md={6}>
-          <TextField
-  label="Total Monthly Budget (₹)"
-  type="number"
-  value={totalBudget}
-  onChange={(e) => setTotalBudget(e.target.value)}
-  fullWidth
-
-
-  placeholder="Enter total budget"
-/>
-
+            <TextField
+              label="Total Monthly Budget (₹)"
+              type="number"
+              value={totalBudget}
+              onChange={(e) => setTotalBudget(e.target.value)}
+              fullWidth
+              placeholder="Enter total budget"
+            />
           </Grid>
         </Grid>
       </Paper>
@@ -226,7 +188,6 @@ const handleSaveBudget = async () => {
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
               fullWidth
-              InputProps={{ style: { color: '#f9fafb' } }}
             >
               {categoryOptions.map((cat) => (
                 <MenuItem key={cat} value={cat}>{cat}</MenuItem>
@@ -240,57 +201,51 @@ const handleSaveBudget = async () => {
               value={categoryLimit}
               onChange={(e) => setCategoryLimit(e.target.value)}
               fullWidth
-              InputProps={{ style: { color: '#f9fafb' } }}
             />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Button
-              fullWidth
-              sx={styles.addButton}
-              onClick={handleAddCategory}
-            >
+            <Button fullWidth sx={styles.addButton} onClick={handleAddCategory}>
               Add Category
             </Button>
           </Grid>
         </Grid>
       </Paper>
-{categoryLimits.length > 0 && (
-  <Paper sx={styles.paper}>
-    <Typography style={styles.sectionTitle}>📊 Category Limits</Typography>
-    <Divider sx={{ mb: 1 }} />
 
-    <TableContainer>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ color: '#f1f5f9', fontWeight: 'bold' }}>Category</TableCell>
-            <TableCell sx={{ color: '#f1f5f9', fontWeight: 'bold' }}>Amount (₹)</TableCell>
-            <TableCell sx={{ color: '#f1f5f9', fontWeight: 'bold' }} align="right">Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {categoryLimits.map((item) => (
-            <TableRow key={item.category}>
-              <TableCell   sx={styles.table_cell}>{item.category}</TableCell>
-              <TableCell sx={styles.table_cell}>₹{item.amount.toFixed(2)}</TableCell>
-              <TableCell align="right">
-                <IconButton color="error" onClick={() => handleDeleteCategory(item.category)}>
-                  <DeleteIcon />
-                </IconButton>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </Paper>
-)}
+      {categoryLimits.length > 0 && (
+        <Paper sx={styles.paper}>
+          <Typography style={styles.sectionTitle}>📊 Category Limits</Typography>
+          <Divider sx={{ mb: 1 }} />
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ color: '#f1f5f9', fontWeight: 'bold' }}>Category</TableCell>
+                  <TableCell sx={{ color: '#f1f5f9', fontWeight: 'bold' }}>Amount (₹)</TableCell>
+                  <TableCell sx={{ color: '#f1f5f9', fontWeight: 'bold' }} align="right">Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {categoryLimits.map((item) => (
+                  <TableRow key={item.category}>
+                    <TableCell sx={styles.table_cell}>{item.category}</TableCell>
+                    <TableCell sx={styles.table_cell}>₹{item.amount.toFixed(2)}</TableCell>
+                    <TableCell align="right">
+                      <IconButton color="error" onClick={() => handleDeleteCategory(item.category)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+      )}
 
       <Button
         variant="contained"
         sx={styles.saveButton}
         onClick={handleSaveBudget}
-        
         disabled={!totalBudget}
       >
         💾 Save Budget

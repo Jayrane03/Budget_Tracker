@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext'; // Ensure this path is correct
-
+import '../../Styles/Dashboard.css'; // Import your custom styles
 // Material-UI Imports
 import {
   AppBar,
@@ -66,10 +66,11 @@ const Navbar = () => {
      
       <Toolbar>
         {/* Logo/Brand Name */}
-         <img src="/freepik__budget.png" alt="" height="45px" width="45px"/>
+         <img className='logo-nav' src="/freepik__budget.png" alt="" height="45px" width="45px"/>
         <Typography
           variant="h6"
           noWrap
+          className="logo-text"
           component={Link} // Use Link for navigation
           to="/"
           sx={{
