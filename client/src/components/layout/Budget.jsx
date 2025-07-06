@@ -9,7 +9,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import config from "../../services/helper";
 import { AuthContext } from '../AuthContext';
-
+import "../../Styles/Budget.css"; // Assuming you have a CSS file for styles
 const categoryOptions = [
   'Food', 'Rent', 'Transportation', 'Utilities', 'Entertainment',
   'Savings', 'Healthcare', 'Shopping', 'Loans', 'Insurance', 'Education', 'Miscellaneous'
@@ -95,54 +95,79 @@ const Budget = () => {
   };
 
   const styles = {
-    container: {
-      padding: '2rem',
-      maxWidth: '1000px',
-      margin: 'auto',
-      fontFamily: 'Segoe UI, sans-serif',
+  container: {
+    padding: '2rem',
+    maxWidth: '1000px',
+    margin: 'auto',
+    fontFamily: 'Segoe UI, sans-serif',
+  },
+  title: {
+    fontSize: '2rem',
+    fontWeight: 700,
+    marginBottom: '1.5rem',
+    textAlign: 'center',
+    color: '#00ffd5',
+    textShadow: '0 0 6px rgba(56,189,248,0.5)',
+    '@media (max-width:786px)': {
+      fontSize: '10px',
+    }
+  },
+  paper: {
+    padding: '1.5rem',
+    borderRadius: '12px',
+    marginBottom: '2rem',
+    width:'100vw',
+    color: '#f1f5f9',
+     '@media (max-width:786px)': {
+      fontSize: '0.9rem',
+      width: '100%',
+      // padding: '0.6rem 1rem',
     },
-    title: {
-      fontSize: '2rem',
-      fontWeight: 700,
-      marginBottom: '1.5rem',
-      textAlign: 'center',
-      color: '#00ffd5',
-      textShadow: '0 0 6px rgba(56,189,248,0.5)',
-    },
-    paper: {
-      padding: '1.5rem',
-      borderRadius: '12px',
-      marginBottom: '2rem',
-      color: '#f1f5f9',
-      boxShadow: '0 0 10px #00ffd5',
-    },
-    sectionTitle: {
-      fontSize: '1.2rem',
-      fontWeight: 'bold',
-      color: '#00ffd5',
-      marginBottom: '1rem',
-    },
-    addButton: {
-      backgroundColor: '#00ffd5',
-      color: '#000',
-      fontWeight: 'bold',
-      borderRadius: '8px',
-      padding: '0.6rem',
-    },
-    saveButton: {
-      backgroundColor: '#00ffd5',
-      color: 'black',
-      fontWeight: 'bold',
-      padding: '0.8rem 1.5rem',
+    boxShadow: '0 0 10px #00ffd5',
+  },
+  sectionTitle: {
+    fontSize: '1.2rem',
+    fontWeight: 'bold',
+    color: '#00ffd5',
+    marginBottom: '1rem',
+    '@media (max-width:786px)': {
       fontSize: '1rem',
-      borderRadius: '8px',
-      display: 'block',
-      margin: '50px auto',
-    },
-    table_cell: {
-      fontSize: '16px',
-    },
-  };
+    }
+  },
+  addButton: {
+    backgroundColor: '#00ffd5',
+    color: '#000',
+    fontWeight: 'bold',
+    borderRadius: '8px',
+    padding: '0.6rem',
+    fontSize: '1rem',
+    '@media (max-width:786px)': {
+      fontSize: '0.85rem',
+      padding: '0.4rem',
+    }
+  },
+  saveButton: {
+    backgroundColor: '#00ffd5',
+    color: 'black',
+    fontWeight: 'bold',
+    padding: '0.8rem 1.5rem',
+    fontSize: '1rem',
+    borderRadius: '8px',
+    display: 'block',
+    margin: '50px auto',
+    '@media (max-width:786px)': {
+      fontSize: '0.9rem',
+      padding: '0.6rem 1rem',
+    }
+  },
+  table_cell: {
+    fontSize: '16px',
+    '@media (max-width:786px)': {
+      fontSize: '13px',
+    }
+  }
+};
+
 
   return (
     <Box sx={styles.container}>

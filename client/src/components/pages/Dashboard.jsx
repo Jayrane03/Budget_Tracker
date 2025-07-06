@@ -237,8 +237,9 @@ function DashboardLayout(props) {
                left:20,
                 position: 'absolute',
                 zIndex: theme.zIndex.drawer + 1,
+                background:'#000',
                 // Apply the green gradient background
-                background: 'linear-gradient(to right, #24243e, #08a087, #24243e)',
+                // background: 'linear-gradient(to right, #24243e, #08a087, #24243e)',
                 color: '#ffffff', // Ensure icon color is white for contrast
                 borderRadius: '50%',
                 p: 1,

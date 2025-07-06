@@ -52,7 +52,7 @@ body {
     margin: 0;
     font-family: 'Poppins', sans-serif; /* Apply the imported font */
     box-sizing: border-box;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 

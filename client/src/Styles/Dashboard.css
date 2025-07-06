@@ -32,6 +32,55 @@ display: block;
 .logo-nav {
 display: none;
 }
+
+.toolpad-demo-app-1wtzl7{
+  margin: 0;
+  padding: 0;
+
+}
+.toolpad-demo-app-1wtzl79 {
+       -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    padding: calc(3 * var(--mui-spacing));
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-left: calc(6 * var(--mui-spacing));
+    /* margin-top */
+}
+.toolpad-demo-app-3obvoc {
+           width: 92vw;
+        display: flex
+;
+        gap: 20px;
+        /* gap: calc(3 * var(--mui-spacing)); */
+        flex-direction: column;
+        left: 4%;
+        position: absolute;
+        justify-content: center;
+        align-items: center;
+        /* font-size: 12px;
+ 
+    /* font-size: 12px; */
+}
+.dashboard-card{
+  background-color: aqua;
+}
+
+.toolpad-demo-app-1h0dqxm-MuiTypography-root {
+    position: absolute;
+    top: 10%;
+    /* margin: -29px; */
+    /* font-family: "Roboto", "Helvetica", "Arial", sans-serif; */
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 1.235;
+    letter-spacing: 0.00735em;
+    font-weight: 700;
+    left: 7%;
+}
+
 }
 .tab-dash{
   display: flex;

@@ -2,10 +2,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import RobotScene from '../../threejs/Robot';
 import '../../Styles/landing.css';
 import Navbar from '../layout/Navbar';
+import Footer from "../layout/Footer"
 import { useContext, useState } from 'react';
 import { AuthContext } from '../AuthContext';
 import { Alert, Snackbar } from '@mui/material';
 import { ThemeProvider, CssBaseline, Box, Typography } from '@mui/material';
+import Features from '../layout/Features';
 const Home = () => {
   const { isAuthenticated , loading } = useContext(AuthContext);
   const [showAlert, setShowAlert] = useState(false);
@@ -92,9 +94,17 @@ const Home = () => {
 
             <RobotScene />
           </div>
+       
         </div>
-      </div>
 
+      </div>
+   <Features/>
+
+
+
+<div className="mt">
+     <Footer></Footer>
+</div>
       {/* MUI Alert Snackbar */}
       <Snackbar open={showAlert} autoHideDuration={1000} onClose={() => setShowAlert(false)}>
         <Alert severity="warning" variant="filled" sx={{ width: '100%' }}>

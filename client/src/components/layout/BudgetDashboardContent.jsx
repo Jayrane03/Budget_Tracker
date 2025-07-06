@@ -33,7 +33,7 @@ import {
   LinearScale,
 } from 'chart.js';
 import { Doughnut, Pie, Bar } from 'react-chartjs-2';
-
+import "../../Styles/Dashboard.css";
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 const chartTypes = { Doughnut, Pie, Bar };
@@ -165,9 +165,9 @@ export default function BudgetDashboardContent() {
   } : null;
 
   return (
-    <Box sx={{ p: 4 }}>
+  <Box sx={{ p: 4 , overflow:"scroll"}}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
-        <Typography variant="h4" fontWeight="bold">Dashboard</Typography>
+        <Typography className='dash-tit' variant="h4" fontWeight="bold">Dashboard</Typography>
         <Button variant="contained" color="primary" onClick={() => setOpenModal(true)}>
           + Add Transaction
         </Button>
@@ -186,10 +186,10 @@ export default function BudgetDashboardContent() {
         <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 3 }}>
 
           {[ [incomeImg, 'Income', totalIncome, '#4caf50'], [expenseImg, 'Expenses', totalExpense, '#f44336'], [balanceImg, 'Balance', totalIncome - totalExpense, '#2196f3'], [budgetImg, 'Budget', budget?.totalBudget || 0, '#ff9800'] ].map(([img, label, value, color], i) => (
-            <Paper key={i} sx={{ p: 3, borderRadius: 4, background: 'rgba(255,255,255,0.05)',height:"17vh", width:"23vw", backdropFilter: 'blur(6px)', color: '#fff', transition: '0.3s', '&:hover': { transform: 'scale(1.03)', boxShadow: `0 4px 20px ${color}`  } }}>
-              <Box display="flex" alignItems="center" gap={2}>
+            <Paper key={i} sx={{ p: 3, borderRadius: 4, background: 'rgba(255,255,255,0.05)',height:"17vh", width:"96%", margin:'0 2px', backdropFilter: 'blur(6px)', color: '#fff', transition: '0.3s', '&:hover': { transform: 'scale(1.03)', boxShadow: `0 4px 20px ${color}`  } }}>
+              <Box display="flex" alignItems="center" gap={2} >
                 <img src={img} alt={label} style={{height:"80px" , width:"80px", borderRadius:"20px", background:"#fff", padding:"10px"}} />
-                <Box>
+                <Box >
                   <Typography variant="subtitle1" fontWeight={600}>{label}</Typography>
                   <Typography variant="h4" sx={{ color }}>₹{value.toFixed(2)}</Typography>
                 </Box>
