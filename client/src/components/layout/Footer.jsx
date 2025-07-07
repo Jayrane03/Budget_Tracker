@@ -11,21 +11,21 @@ const Footer = () => {
             <div className="texts">
               <h2 className="section-title">Boost your budgeting today</h2>
               <h3 className="section-sub-heading">
-                <span>Just</span> <strong>$95</strong>
-                <span> for a </span> <strong>40 hour</strong>
-                <span> financial planning course</span>
+                <span>Just</span> <strong>less</strong>
+                <span> your  </span> <strong>expenses</strong>
+                <span> for better financial planning.</span>
               </h3>
             </div>
-            <a href="#" className="button">
-              <span className="label">Join the course</span>
+            <a href="/dashboard" className="button">
+              <span className="label">Try the BudgetAI</span>
             </a>
-            <img
+            {/* <img
               className="illustration"
               src="/Illustration/illustration-student.png"
               alt="illustration"
               width="120"
               height="94"
-            />
+            /> */}
           </div>
         </div>
 

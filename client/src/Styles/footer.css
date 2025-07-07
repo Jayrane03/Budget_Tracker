@@ -15,7 +15,7 @@ a:hover {
   text-decoration: underline;
 }
 ul > li > a {
-  color: #150c21;
+  color: #00ffd5;
 }
 ul > li {
   line-height: 1.5em;
@@ -25,12 +25,14 @@ ul > li {
 .footer {
   display: block;
   width: 100vw;
+
   margin: 0 !important;
   position: relative;
   padding: 150px 25px 50px 25px;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  background: #fff;
+  background: #150c21;
+  color: #00ffd5;
 }
 .footer-start {
   display: flex;
@@ -39,12 +41,13 @@ ul > li {
   justify-content: space-between;
   max-width: 1280px;
   width: 90%;
+
   margin: auto;
   padding: 80px 100px;
   box-shadow: 0px 0px 15px #00ffd5;
   background: #00ffd5;
   border-radius: 15px;
-  color: #150c21;
+  color: #00ffd5;
 }
 .start-learning {
   position: absolute;
@@ -86,12 +89,12 @@ ul > li {
 .text {
   font-size: 17px;
   line-height: 17px;
-  color: #150c21;
+  color: #00ffd5;
   letter-spacing: 0.18em;
   font-weight: 600;
 }
 .copyright {
-  color: #150c21;
+  color: #00ffd5;
   font-size: 12px;
   line-height: 12px;
 }
@@ -105,7 +108,7 @@ ul > li {
   font-weight: 700;
   font-size: 16px;
   margin-bottom: 0.5em;
-  color: #150c21;
+  color: #00ffd5;
 }
 .footer .column .column-title:not(:first-child) {
   margin-top: 1em;
@@ -130,17 +133,19 @@ a.button {
   font-weight: 700;
   padding: 0 30px;
   text-decoration: unset;
-  box-shadow: 0px 0px 74px #b3a6c4;
+  box-shadow: 0px 0px 74px #150c21;
 }
 .section-title {
   font-size: 44px;
   font-weight: 700;
+  text-shadow: 0px 0px 35px #150c21;
   color: #150c21;
 }
 .section-sub-heading {
   font-size: 22px;
   font-weight: 400;
   color: #150c21;
+    text-shadow: 0px 0px 35px #150c21;
 }
 .section-sub-heading span {
   opacity: 0.6;
@@ -153,14 +158,17 @@ a.button {
 @media only screen and (max-width: 990px) {
   .footer .inner {
     display: grid;
+  
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
   .start-learning {
     position: unset;
   }
+  
   .footer-start {
     width: 100%;
     display: block;
+      text-align: center;
     padding: 30px 20px;
     margin: 30px 0;
   }
@@ -172,6 +180,10 @@ a.button {
   }
   footer.footer {
     padding-top: 0;
+    
+  }
+  .footer{
+    text-align: center;
   }
   a.button {
     height: 50px;

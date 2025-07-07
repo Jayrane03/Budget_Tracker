@@ -60,9 +60,14 @@ const Features = () => {
       sx={{
         py: 10,
         px: 3,
-        background: 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)',
+        // background: 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)',
+          // background: radial-gradient(circle, #0f0f2d 0%, #000010 100%)
         color: '#f8fafc',
         textAlign: 'center',
+        mb: 20,
+        [theme.breakpoints.down('md')]: {
+          mb: 5, // 100px in theme spacing (8px * 12.5 = 100px)
+        },
       }}
     >
       <Typography
@@ -102,13 +107,24 @@ const Features = () => {
                 }}
               >
                 <CardMedia
-                  component="img"
-                  height="250"
-                  cursor="pointer"
-                  image={feature.image}
-                  alt={feature.title}
-                  sx={{ objectFit: 'cover' , width:"35vw" }}
-                />
+  component="img"
+  image={feature.image}
+  alt={feature.title}
+  sx={{
+    objectFit: 'cover',
+    width: {
+      xs: '100%', // Extra-small: mobile
+      sm: '100%',
+      md: '35vw', // Medium and up
+    },
+    height: {
+      xs: 180,
+      sm: 220,
+      md: 250,
+    },
+  }}
+/>
+
                 <CardContent sx={{ p: 3 }}>
                   <Typography
                     variant="h6"
