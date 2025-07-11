@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import RobotScene from '../../threejs/Robot';
 import '../../Styles/landing.css';
 import Navbar from '../layout/Navbar';
+import About from '../layout/about';
 import Footer from "../layout/Footer"
 import { useContext, useState } from 'react';
 import { AuthContext } from '../AuthContext';
@@ -98,8 +99,9 @@ const Home = () => {
         </div>
 
       </div>
-   <Features/>
 
+   <About></About>
+   <Features/>
 
 
 <div className="mt">

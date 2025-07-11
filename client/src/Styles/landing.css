@@ -33,6 +33,7 @@
 
 .landing-title span {
   color: #00ffd5;
+  text-shadow: 0px 2px 20px #00ffd5;
 }
 
 .landing-subtitle {
@@ -92,4 +93,30 @@ width: 200px;
 }
 .btn{
   background-color: #00ffd5;
+}
+@media (max-width: 786px){
+  .landing-robot{
+    flex: 1;
+    position: absolute;
+    top: 10%;
+    left: -12%;
+  }
+  .landing-text{
+    margin-top: 270px;
+  }
+}
+@media (max-width: 1024px){
+  .landing-robot {
+  flex: 2;
+  display: flex;
+
+ 
+}
+.landing-robot svg{
+  width: 450px;
+  margin-left: 30px;
+}
+.landing-cont{
+  overflow-x: hidden !important;
+}
 }

@@ -145,7 +145,6 @@ def analyze_spending():
     results['insights'] = insights
     return jsonify(results)
 
-
 @app.route('/api/predict-budget', methods=['POST'])
 def predict_budget():
     """Predict and recommend budget allocations based on spending patterns."""
@@ -155,14 +154,34 @@ def predict_budget():
         transactions = data.get('transactions', [])
         income = float(data.get('income', 0))
 
+        # --- Debugging: Print incoming data to Flask server console ---
+        print("\n--- Received data in Flask predict_budget ---")
+        print(f"Transactions (first 2): {transactions[:2] if transactions else 'No transactions'}")
+        print(f"Income: {income}")
+        print("-------------------------------------------\n")
+
         if not transactions or not isinstance(transactions, list):
-            return jsonify({'error': 'No transaction data provided'}), 400
+            return jsonify({'error': 'No transaction data provided or invalid format (must be a list)'}), 400
+
+        # Ensure that `amount`, `type`, `date`, and `category` are present for all transactions
+        # This is a robust check, as a single malformed transaction can break the DataFrame creation
+        for i, t in enumerate(transactions):
+            if not all(k in t for k in ['amount', 'type', 'date', 'category']):
+                return jsonify({'error': f'Transaction at index {i} is missing required fields (amount, type, date, category)'}), 400
+            # Ensure amount is convertible to float
+            try:
+                float(t['amount'])
+            except (ValueError, TypeError):
+                return jsonify({'error': f'Transaction at index {i} has an invalid amount: {t["amount"]}'}), 400
+
 
         df = pd.DataFrame(transactions)
 
-        # Ensure required columns exist
-        if not {'amount', 'type', 'date'}.issubset(df.columns):
-            return jsonify({'error': 'Invalid transaction format'}), 400
+        # Explicitly convert 'amount' column to numeric, coercing errors to NaN
+        df['amount'] = pd.to_numeric(df['amount'], errors='coerce')
+        # Drop rows where amount conversion failed
+        df.dropna(subset=['amount'], inplace=True)
+
 
         df['date'] = pd.to_datetime(df['date'], errors='coerce')
         df['amount_abs'] = df['amount'].apply(lambda x: abs(float(x)))
@@ -170,12 +189,32 @@ def predict_budget():
         # Filter only expenses
         expenses = df[df['type'].str.lower() == 'expense']
 
-        if 'category' not in expenses.columns or expenses.empty:
-            return jsonify({'error': 'Not enough category data for budget prediction'}), 400
+        # Check if there are enough expenses to make predictions
+        if expenses.empty:
+            return jsonify({'error': 'No expense transactions found for budget prediction. Please add some expense transactions.'}), 400
+
+        if 'category' not in expenses.columns:
+             return jsonify({'error': 'Expense transactions are missing the "category" field.'}), 400
+
 
         # Group spending by category
         category_spending = expenses.groupby('category')['amount_abs'].sum().to_dict()
         total_spending = sum(category_spending.values())
+
+        if total_spending == 0:
+            # If there's income, we can still recommend savings, but category breakdown is impossible
+            if income > 0:
+                budget_recommendations = {'Savings': round(income * 0.1, 2)} # Default 10% savings
+                return jsonify({
+                    'current_spending': {},
+                    'spending_percentages': {},
+                    'budget_recommendations': budget_recommendations,
+                    'total_budget': income,
+                    'message': "No historical spending to categorize, recommending savings based on income."
+                })
+            else:
+                return jsonify({'error': 'Total spending is zero, cannot calculate percentages or provide recommendations without income.'}), 400
+
 
         # Calculate category-wise spending percentage
         category_percentages = {
@@ -184,7 +223,7 @@ def predict_budget():
 
         # Budgeting logic
         budget_base = income if income > 0 else total_spending
-        savings_rate = 0.1 if income > 0 else 0
+        savings_rate = 0.1 # Default savings rate
         budget_available = budget_base * (1 - savings_rate)
 
         budget_recommendations = {
@@ -194,6 +233,10 @@ def predict_budget():
 
         if income > 0:
             budget_recommendations['Savings'] = round(income * savings_rate, 2)
+        else: # If no income, ensure a message about how savings are handled
+            if 'Savings' in budget_recommendations:
+                 del budget_recommendations['Savings'] # If total_spending was base, no explicit savings category from that.
+
 
         return jsonify({
             'current_spending': category_spending,
@@ -203,8 +246,17 @@ def predict_budget():
             'message': f"Budget recommendations based on your {'income' if income > 0 else 'historical spending'}"
         })
 
+    except ValueError as ve:
+        # Catch specific errors like float conversion issues or missing data in parsing
+        return jsonify({'error': 'Invalid data format detected.', 'details': str(ve)}), 400
     except Exception as e:
-        return jsonify({'error': 'Server error while predicting budget', 'details': str(e)}), 500
-    
+        # Catch any other unexpected errors and log them server-side
+        print(f"--- Flask Server Caught Exception ---")
+        print(f"Error Type: {type(e).__name__}")
+        print(f"Error Details: {str(e)}")
+        import traceback
+        traceback.print_exc() # Print full traceback for debugging
+        print(f"-------------------------------------\n")
+        return jsonify({'error': 'Internal server error during budget prediction', 'details': str(e)}),500
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

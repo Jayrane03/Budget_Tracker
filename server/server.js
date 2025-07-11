@@ -41,7 +41,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/analyze', analyzeRoute);
-app.use('/api/predict', predictRoutes);
+app.use('/api', predictRoutes);
 app.use('/api/budget',budgetRoutes);
 
 // Health check route

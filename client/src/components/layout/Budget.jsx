@@ -9,7 +9,8 @@ import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import config from "../../services/helper";
 import { AuthContext } from '../AuthContext';
-import "../../Styles/Budget.css"; // Assuming you have a CSS file for styles
+import "../../Styles/Budget.css";
+
 const categoryOptions = [
   'Food', 'Rent', 'Transportation', 'Utilities', 'Entertainment',
   'Savings', 'Healthcare', 'Shopping', 'Loans', 'Insurance', 'Education', 'Miscellaneous'
@@ -17,7 +18,6 @@ const categoryOptions = [
 
 const Budget = () => {
   const { isAuthenticated, loading: authLoading } = useContext(AuthContext);
-
   const [month, setMonth] = useState(dayjs());
   const [totalBudget, setTotalBudget] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Rent');
@@ -94,92 +94,17 @@ const Budget = () => {
     }
   };
 
-  const styles = {
-  container: {
-    padding: '2rem',
-    maxWidth: '1000px',
-    margin: 'auto',
-    fontFamily: 'Segoe UI, sans-serif',
-  },
-  title: {
-    fontSize: '2rem',
-    fontWeight: 700,
-    marginBottom: '1.5rem',
-    textAlign: 'center',
-    color: '#00ffd5',
-    textShadow: '0 0 6px rgba(56,189,248,0.5)',
-    '@media (max-width:786px)': {
-      fontSize: '10px',
-    }
-  },
-  paper: {
-    padding: '1.5rem',
-    borderRadius: '12px',
-    marginBottom: '2rem',
-    width:'100vw',
-    color: '#f1f5f9',
-     '@media (max-width:786px)': {
-      fontSize: '0.9rem',
-      width: '100%',
-      // padding: '0.6rem 1rem',
-    },
-    boxShadow: '0 0 10px #00ffd5',
-  },
-  sectionTitle: {
-    fontSize: '1.2rem',
-    fontWeight: 'bold',
-    color: '#00ffd5',
-    marginBottom: '1rem',
-    '@media (max-width:786px)': {
-      fontSize: '1rem',
-    }
-  },
-  addButton: {
-    backgroundColor: '#00ffd5',
-    color: '#000',
-    fontWeight: 'bold',
-    borderRadius: '8px',
-    padding: '0.6rem',
-    fontSize: '1rem',
-    '@media (max-width:786px)': {
-      fontSize: '0.85rem',
-      padding: '0.4rem',
-    }
-  },
-  saveButton: {
-    backgroundColor: '#00ffd5',
-    color: 'black',
-    fontWeight: 'bold',
-    padding: '0.8rem 1.5rem',
-    fontSize: '1rem',
-    borderRadius: '8px',
-    display: 'block',
-    margin: '50px auto',
-    '@media (max-width:786px)': {
-      fontSize: '0.9rem',
-      padding: '0.6rem 1rem',
-    }
-  },
-  table_cell: {
-    fontSize: '16px',
-    '@media (max-width:786px)': {
-      fontSize: '13px',
-    }
-  }
-};
-
-
   return (
-    <Box sx={styles.container}>
+    <Box className="budget-container">
       {showAlert && (
         <Alert severity="success" variant="filled" sx={{ width: '80%', margin: 'auto', mb: 2 }}>
           ✅ Budget {existingBudgetId ? 'updated' : 'saved'} successfully!
         </Alert>
       )}
 
-      <Typography style={styles.title}>📅 Set Monthly Budget</Typography>
+      <Typography className="budget-title">📅 Set Monthly Budget</Typography>
 
-      <Paper sx={styles.paper}>
+      <Paper className="budget-paper">
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <DatePicker
@@ -203,8 +128,8 @@ const Budget = () => {
         </Grid>
       </Paper>
 
-      <Paper sx={styles.paper}>
-        <Typography style={styles.sectionTitle}>➕ Add Category Limits</Typography>
+      <Paper className="budget-paper">
+        <Typography className="budget-section-title">➕ Add Category Limits</Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
             <TextField
@@ -229,7 +154,7 @@ const Budget = () => {
             />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Button fullWidth sx={styles.addButton} onClick={handleAddCategory}>
+            <Button fullWidth className="budget-add-button" onClick={handleAddCategory}>
               Add Category
             </Button>
           </Grid>
@@ -237,8 +162,8 @@ const Budget = () => {
       </Paper>
 
       {categoryLimits.length > 0 && (
-        <Paper sx={styles.paper}>
-          <Typography style={styles.sectionTitle}>📊 Category Limits</Typography>
+        <Paper className="budget-paper">
+          <Typography className="budget-section-title">📊 Category Limits</Typography>
           <Divider sx={{ mb: 1 }} />
           <TableContainer>
             <Table>
@@ -252,8 +177,8 @@ const Budget = () => {
               <TableBody>
                 {categoryLimits.map((item) => (
                   <TableRow key={item.category}>
-                    <TableCell sx={styles.table_cell}>{item.category}</TableCell>
-                    <TableCell sx={styles.table_cell}>₹{item.amount.toFixed(2)}</TableCell>
+                    <TableCell className="budget-table-cell">{item.category}</TableCell>
+                    <TableCell className="budget-table-cell">₹{item.amount.toFixed(2)}</TableCell>
                     <TableCell align="right">
                       <IconButton color="error" onClick={() => handleDeleteCategory(item.category)}>
                         <DeleteIcon />
@@ -269,7 +194,7 @@ const Budget = () => {
 
       <Button
         variant="contained"
-        sx={styles.saveButton}
+        className="budget-save-button"
         onClick={handleSaveBudget}
         disabled={!totalBudget}
       >

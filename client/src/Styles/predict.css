@@ -1,0 +1,163 @@
+/* src/components/PredictBudget/PredictBudget.module.css */
+
+.container {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #0f172a; /* Dark background */
+    border-radius: 16px;
+    box-shadow: 0 0 20px #00e6c2; /* Neon green glow */
+    font-family: 'Segoe UI', sans-serif;
+    color: #f9fafb; /* Light text */
+    overflow: hidden; /* For animations */
+}
+
+.heading {
+    font-size: 2.4rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #00e6c2; /* Neon green */
+    text-shadow: 0 0 10px #00e6c2; /* Glowing text effect */
+}
+
+.contentRow {
+    display: flex;
+    flex-direction: column !important;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    align-items: flex-start; /* Align items to the top */
+}
+
+.image {
+    flex: 1;
+    min-width: 300px; /* Ensure image doesn't get too small */
+    max-width: 400px;
+    border-radius: 12px;
+    border: 2px solid #334155;
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.1);
+    object-fit: cover; /* Ensures image covers the area nicely */
+}
+
+.results {
+    flex: 1;
+    min-width: 300px; /* Ensure results don't get too small */
+    background-color: #1e293b; /* Darker background for results section */
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.recommendationHeading {
+    font-size: 1.5rem; /* Slightly larger heading for recommendations */
+    color: #00e6c2; /* Neon green */
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.recommendationList {
+    list-style: none; /* Remove default list style */
+    padding: 0;
+    margin: 0;
+}
+
+.recommendationListItem {
+    margin-bottom: 0.8rem;
+    padding: 0.8rem 1rem; /* More padding */
+    border-radius: 8px;
+    background-color: #334155; /* Slightly lighter dark background */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid #00e6c2; /* Accent bar */
+}
+
+.categoryName {
+    font-weight: bold;
+    color: #f9fafb;
+}
+
+.categoryAmount {
+    color: #a7f3d0; /* Light green for amounts */
+    font-weight: bold;
+}
+
+.message {
+    margin-top: 1rem;
+    font-style: italic;
+    color: #94a3b8; /* Muted grey */
+    text-align: center;
+}
+
+.inputRow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.error {
+    color: #f87171; /* Red for errors */
+    text-align: center;
+    margin-top: 1rem;
+}
+
+/* New Styles for enhanced display */
+.summaryBox {
+    background-color: #0f172a; /* Darker background for summary */
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #00e6c2;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.percentageItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px dashed #475569; /* Subtle separator */
+}
+
+.percentageItem:last-child {
+    border-bottom: none;
+}
+
+.percentageText {
+    font-size: 0.95rem;
+    color: #cbd5e1; /* Lighter grey for percentages */
+}
+
+/* Animations (Framer Motion related) */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .contentRow {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .image {
+        max-width: 100%;
+    }
+
+    .results {
+        min-width: unset; /* Remove min-width for smaller screens */
+        width: 100%;
+    }
+}
