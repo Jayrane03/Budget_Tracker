@@ -1,7 +1,14 @@
-# python-ai/requirements.txt
+# Core frameworks
 flask==2.0.1
+fastapi==0.103.1
+uvicorn==0.22.0
+
+# Data processing & ML
 pandas==1.3.3
 scikit-learn==1.0
 numpy==1.24.4
-fastapi
-uvicorn
+
+# Build tools (make sure these are installed before building wheels)
+pip>=24.0
+setuptools>=68.0
+wheel>=0.40.0
