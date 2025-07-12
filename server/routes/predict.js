@@ -5,7 +5,10 @@ const axios = require('axios');
 const Transaction = require('../models/Transaction'); // Make sure this path is correct
 
 // Use an environment variable for your Flask server URL
-const FLASK_SERVER_URL = process.env.FLASK_URL || 'http://localhost:5001';
+// Use an environment variable for your Flask server URL
+// const FLASK_SERVER_URL = process.env.PYTHON_SERVER_URL || 'http://localhost:5001';
+
+const FLASK_SERVER_URL =  'http://localhost:5001';
 
 // POST /api/predict-budget
 // Assuming authentication middleware runs before this,

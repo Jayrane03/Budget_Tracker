@@ -24,26 +24,21 @@
 .contentRow {
     display: flex;
     flex-direction: column !important;
-    justify-content: space-between;
+    justify-content: center !important;
     gap: 2rem;
     flex-wrap: wrap;
-    align-items: flex-start; /* Align items to the top */
+    align-items: center !important; /* Align items to the top */
 }
 
-.image {
-    flex: 1;
-    min-width: 300px; /* Ensure image doesn't get too small */
-    max-width: 400px;
-    border-radius: 12px;
-    border: 2px solid #334155;
-    box-shadow: 0 0 12px rgba(0, 255, 255, 0.1);
-    object-fit: cover; /* Ensures image covers the area nicely */
+/* sures image covers the area nicely */ */
+.spline_robot{
+     height: 40vh;
+   /* zoom: 1; */
 }
-
 .results {
     flex: 1;
     min-width: 300px; /* Ensure results don't get too small */
-    background-color: #1e293b; /* Darker background for results section */
+    background-color: #9aacc9;   
     padding: 1.5rem;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.4);
@@ -69,7 +64,7 @@
     margin-bottom: 0.8rem;
     padding: 0.8rem 1rem; /* More padding */
     border-radius: 8px;
-    background-color: #334155; /* Slightly lighter dark background */
+    background-color: #c7ceda; /* Slightly lighter dark background */
     display: flex;
     justify-content: space-between;
     align-items: center;

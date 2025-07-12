@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import config from '../../services/helper';
-import TransactionForm from '../TransactionForm';
+import TransactionForm from '../model/TransactionForm';
 import dayjs from 'dayjs';
 import {
   Box,

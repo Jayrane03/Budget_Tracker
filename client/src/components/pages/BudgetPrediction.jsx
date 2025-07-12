@@ -16,12 +16,13 @@ import {
   CardContent,
   Grid,
 } from '@mui/material';
+import Spline from '@splinetool/react-spline';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'; // Icon for categories
 import SavingsIcon from '@mui/icons-material/Savings'; // Icon for savings
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'; // Icon for income
 import PercentIcon from '@mui/icons-material/Percent'; // Icon for percentages
 import { motion, AnimatePresence } from 'framer-motion'; // For animations
-
+import "../../Styles/predict.css"
 import config from '../../services/helper'; // Assuming this has BASE_URL for your Express backend
 
 const PredictBudget = () => {
@@ -157,13 +158,15 @@ const PredictBudget = () => {
             sx={{
               flex: '1',
               minWidth: { xs: '100%', md: '300px' }, // Ensure image doesn't get too small
-              maxWidth: '400px',
+              width: '80vw',
+              display:"block",
+              margin:"auto",
               borderRadius: '12px',
               border: '2px solid #334155',
               boxShadow: '0 0 12px rgba(0, 255, 255, 0.1)',
             }}
           >
-            <img
+            {/* <img
               src="/budget_ai.jpg"
               alt="AI Budget"
               style={{
@@ -172,7 +175,14 @@ const PredictBudget = () => {
                 borderRadius: '12px',
                 objectFit: 'cover', // Ensures image covers the area nicely
               }}
-            />
+            /> */}
+          <div className="">
+   <Spline className='spline_robot' scene="https://prod.spline.design/ZwZXfZUVWxf4jrEF/scene.splinecode" />
+  
+
+</div>
+
+
           </Box>
         </Grid>
 
@@ -185,7 +195,7 @@ const PredictBudget = () => {
               padding: '1.5rem',
               borderRadius: '12px',
               boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
-              display: 'flex',
+             
               flexDirection: 'column',
               gap: '1rem',
             }}

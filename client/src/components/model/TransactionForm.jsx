@@ -11,7 +11,7 @@ import {
   Typography,
   CircularProgress // For loading indicator on auto-categorize
 } from '@mui/material';
-import config from '../services/helper'; // Assuming this path is correct
+import config from '../../services/helper'; // Assuming this path is correct
 
 const TransactionForm = ({ addTransaction, handleClose }) => {
   const [formData, setFormData] = useState({
