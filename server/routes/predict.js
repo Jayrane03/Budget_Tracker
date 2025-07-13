@@ -6,10 +6,15 @@ const Transaction = require('../models/Transaction'); // Make sure this path is 
 
 // Use an environment variable for your Flask server URL
 // Use an environment variable for your Flask server URL
-const FLASK_SERVER_URL = process.env.PYTHON_SERVER_URL;
+// const FLASK_SERVER_URL = process.env.PYTHON_SERVER_URL;
 
-// const FLASK_SERVER_URL =  'http://localhost:5001';
 
+const FLASK_SERVER_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://budget-tracker-micro-service.onrender.com'
+    : 'http://localhost:5001';
+
+console.log(`✅ Flask server set to: ${FLASK_SERVER_URL} (env: ${process.env.NODE_ENV})`);
 // POST /api/predict-budget
 // Assuming authentication middleware runs before this,
 // so req.user.id is available and userId from body is for specific request, or remove userId from body
