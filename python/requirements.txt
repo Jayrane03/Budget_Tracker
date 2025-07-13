@@ -4,5 +4,6 @@ scikit-learn==1.3.0
 matplotlib==3.7.2
 seaborn==0.12.2
 flask==2.3.3
+flask-cors
 setuptools<60.0
 wheel
