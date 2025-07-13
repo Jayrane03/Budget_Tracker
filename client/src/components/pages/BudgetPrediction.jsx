@@ -114,10 +114,11 @@ const PredictBudget = () => {
         padding: '2rem',
         maxWidth: '1000px',
         display:'flex',
+        height:"10-0vh",
         flexDirection: 'column',
         justifyContent:'center',
         alignItems:'center',
-        margin: '0 auto',
+        // margin: '0 auto',
         background: '#0f172a', // Dark background
         borderRadius: '16px',
         boxShadow: '0 0 20px #00e6c2', // Neon green glow
@@ -156,9 +157,9 @@ const PredictBudget = () => {
         <Grid item xs={12} md={6}>
           <Box
             sx={{
-              flex: '1',
-              minWidth: { xs: '100%', md: '300px' }, // Ensure image doesn't get too small
-              width: '80vw',
+              // flex: '1',
+              // minWidth: { xs: '100%', md: '300px' }, // Ensure image doesn't get too small
+              // width: '80vw',
               display:"block",
               margin:"auto",
               borderRadius: '12px',

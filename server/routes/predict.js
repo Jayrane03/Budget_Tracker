@@ -6,9 +6,9 @@ const Transaction = require('../models/Transaction'); // Make sure this path is 
 
 // Use an environment variable for your Flask server URL
 // Use an environment variable for your Flask server URL
-const FLASK_SERVER_URL = process.env.PYTHON_SERVER_URL || 'http://localhost:5001';
+// const FLASK_SERVER_URL = process.env.PYTHON_SERVER_URL;
 
-// const FLASK_SERVER_URL =  'http://localhost:5001';
+const FLASK_SERVER_URL =  'http://localhost:5001';
 
 // POST /api/predict-budget
 // Assuming authentication middleware runs before this,

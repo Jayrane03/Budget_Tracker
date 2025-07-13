@@ -4,7 +4,7 @@ fastapi==0.103.1
 uvicorn==0.22.0
 pandas==1.3.3
 scikit-learn==1.0
-numpy==1.26.4  # ✅ Compatible with Python 3.11 and has wheels
+numpy>=1.21.0,<2.0.0 # ✅ Compatible with Python 3.11 and has wheels
 pip>=24.0
 setuptools>=68.0
 wheel>=0.40.0

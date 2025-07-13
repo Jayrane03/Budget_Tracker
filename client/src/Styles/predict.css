@@ -1,158 +1,153 @@
-/* src/components/PredictBudget/PredictBudget.module.css */
-
-.container {
-    padding: 2rem;
-    max-width: 1000px;
-    margin: 0 auto;
-    background: #0f172a; /* Dark background */
-    border-radius: 16px;
-    box-shadow: 0 0 20px #00e6c2; /* Neon green glow */
-    font-family: 'Segoe UI', sans-serif;
-    color: #f9fafb; /* Light text */
-    overflow: hidden; /* For animations */
+.cont {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #0f172a;
+  border-radius: 16px;
+  box-shadow: 0 0 20px #00e6c2;
+  font-family: 'Segoe UI', sans-serif;
+  color: #f9fafb;
+  overflow: hidden;
 }
 
-.heading {
-    font-size: 2.4rem;
-    font-weight: bold;
-    margin-bottom: 2rem;
-    text-align: center;
-    color: #00e6c2; /* Neon green */
-    text-shadow: 0 0 10px #00e6c2; /* Glowing text effect */
+.budget-title {
+  font-size: 2.4rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #00e6c2;
+  text-shadow: 0 0 10px #00e6c2;
 }
 
-.contentRow {
-    display: flex;
-    flex-direction: column !important;
-    justify-content: center !important;
-    gap: 2rem;
-    flex-wrap: wrap;
-    align-items: center !important; /* Align items to the top */
+.main-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  width: 100%;
+  justify-content: space-between;
 }
 
-/* sures image covers the area nicely */ */
-.spline_robot{
-     height: 40vh;
-   /* zoom: 1; */
-}
-.results {
-    flex: 1;
-    min-width: 300px; /* Ensure results don't get too small */
-    background-color: #9aacc9;   
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+.spline-wrapper {
+  flex: 1;
+  min-width: 300px;
+  border: 2px solid #334155;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0f172a;
 }
 
-.recommendationHeading {
-    font-size: 1.5rem; /* Slightly larger heading for recommendations */
-    color: #00e6c2; /* Neon green */
-    margin-bottom: 1rem;
-    text-align: center;
+.spline_robot {
+  width: 100%;
+  height: 400px;
 }
 
-.recommendationList {
-    list-style: none; /* Remove default list style */
-    padding: 0;
-    margin: 0;
+.card-container {
+  flex: 1;
+  min-width: 300px;
+  background-color: #1e293b;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.recommendationListItem {
-    margin-bottom: 0.8rem;
-    padding: 0.8rem 1rem; /* More padding */
-    border-radius: 8px;
-    background-color: #c7ceda; /* Slightly lighter dark background */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-left: 4px solid #00e6c2; /* Accent bar */
+.loading-center {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
 }
 
-.categoryName {
-    font-weight: bold;
-    color: #f9fafb;
+.alert-error {
+  margin-bottom: 1rem;
+  color: #f87171;
 }
 
-.categoryAmount {
-    color: #a7f3d0; /* Light green for amounts */
-    font-weight: bold;
+.budget-summary {
+  background-color: #0f172a;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #00e6c2;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
-.message {
-    margin-top: 1rem;
-    font-style: italic;
-    color: #94a3b8; /* Muted grey */
-    text-align: center;
+.budget-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.inputRow {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 2rem;
-    gap: 1rem;
-    flex-wrap: wrap;
+.budget-list-item {
+  margin-bottom: 0.8rem;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  background-color: #334155;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 4px solid #00e6c2;
 }
 
-.error {
-    color: #f87171; /* Red for errors */
-    text-align: center;
-    margin-top: 1rem;
+.spending-box {
+  margin-top: 1.5rem;
 }
 
-/* New Styles for enhanced display */
-.summaryBox {
-    background-color: #0f172a; /* Darker background for summary */
-    padding: 1rem;
-    border-radius: 8px;
-    border: 1px solid #00e6c2;
-    text-align: center;
-    margin-bottom: 1rem;
+.spending-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+  border-bottom: 1px dashed #475569;
 }
 
-.percentageItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.4rem 0;
-    border-bottom: 1px dashed #475569; /* Subtle separator */
+.input-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
-.percentageItem:last-child {
-    border-bottom: none;
+.income-input .MuiInputBase-input {
+  color: #f9fafb;
 }
 
-.percentageText {
-    font-size: 0.95rem;
-    color: #cbd5e1; /* Lighter grey for percentages */
+.income-input .MuiInputLabel-root {
+  color: #94a3b8;
 }
 
-/* Animations (Framer Motion related) */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+.income-input .MuiOutlinedInput-notchedOutline {
+  border-color: #475569;
 }
 
-.fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
+.income-input:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #00e6c2;
 }
 
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-    .contentRow {
-        flex-direction: column;
-        align-items: center;
-    }
+.income-input.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #00e6c2;
+}
 
-    .image {
-        max-width: 100%;
-    }
+.predict-btn {
+  background-color: #3b82f6;
+  color: white;
+  font-weight: bold;
+  padding: 0.6rem 1.2rem;
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
 
-    .results {
-        min-width: unset; /* Remove min-width for smaller screens */
-        width: 100%;
-    }
+.predict-btn:hover {
+  background-color: #2563eb;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
 }
