@@ -2,9 +2,9 @@
 flask==2.0.1
 fastapi==0.103.1
 uvicorn==0.22.0
-pandas==1.3.3
+pandas>=2.0.0  # Changed from 1.3.3 to a version compatible with Python 3.11
 scikit-learn==1.0
-numpy>=1.21.0,<2.0.0 # ✅ Compatible with Python 3.11 and has wheels
+numpy>=1.21.0,<2.0.0
 pip>=24.0
 setuptools>=68.0
 wheel>=0.40.0
