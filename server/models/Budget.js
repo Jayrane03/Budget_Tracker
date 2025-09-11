@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from'mongoose';
 
 
 const categoryLimitSchema = new mongoose.Schema({
@@ -12,5 +12,6 @@ const budgetSchema = new mongoose.Schema({
   totalBudget: { type: Number, required: true },
   categoryLimits: [categoryLimitSchema],
 });
-
-module.exports = mongoose.model('Budget', budgetSchema);
+const Budget = mongoose.model('Budget', budgetSchema);
+export default Budget;
+// module.exports = mongoose.model('Budget', budgetSchema);

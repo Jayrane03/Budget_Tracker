@@ -1,8 +1,8 @@
 // routes/transactionRoutes.js
-const express = require('express');
+import express  from'express';
 const router = express.Router();
-const auth = require('../middleware/auth');
-const {
+import auth from  '../middleware/auth.js';
+import {
   getTransactions,
   addTransaction,
   updateTransaction,
@@ -10,7 +10,7 @@ const {
   categorySummary,
   deleteAllTransactions,
   monthlySummary
-} = require('../controller/transactionController');
+} from'../controller/transactionController.js';
 
 router.get('/', auth, getTransactions);
 router.post('/', auth, addTransaction);
@@ -20,4 +20,5 @@ router.delete('/:id', auth, deleteTransaction);
 router.get('/summary', auth, categorySummary);
 router.get('/monthly', auth, monthlySummary);
 
-module.exports = router;
+// module.exports = router;
+export default router; // Use ES6 export for consistency

@@ -16,6 +16,7 @@ import { DemoProvider } from '@toolpad/core/internal';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Budget from '../layout/Budget';
 import Reports from '../pages/Reports';
+import Chatbot from '../layout/chatBot';
 import PredictBudget from '../pages/BudgetPrediction';
 import Transactions from '../pages/Transaction';
 import { AuthContext } from '../AuthContext';
@@ -38,6 +39,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close'; // Import CloseIcon
 import { keyframes } from '@mui/system'; // Import keyframes for animations
 import BudgetDashboardContent from '../layout/BudgetDashboardContent';
+import BotChat from '../layout/chatBot';
 // Define the glow animation outside the component
 const glowAnimation = keyframes`
   0% {
@@ -156,6 +158,7 @@ function DashboardLayout(props) {
     { label: 'Budget', value: '/budget', icon: <SavingsIcon /> },
     { label: 'Transactions', value: '/transactions', icon: <ShoppingCartIcon /> },
     { label: 'Reports', value: '/reports', icon: <BarChartIcon /> },
+    { label: 'Chat Bot', value: '/chat-bot', icon: <AutoGraphIcon /> },
     { label: 'Predict Budget', value: '/predict-budget', icon: <AutoGraphIcon /> },
   ];
 
@@ -333,6 +336,7 @@ function DashboardLayout(props) {
               <Route path="transactions" element={<Transactions />} />
               <Route path="reports" element={<Reports />} />
               <Route path="predict-budget" element={<PredictBudget />} />
+              <Route path="/chat-bot" element={<Chatbot />} />
               <Route path="*" element={<BudgetDashboardContent />} />
             </Routes>
           </Box>

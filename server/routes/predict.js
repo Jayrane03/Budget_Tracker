@@ -1,8 +1,8 @@
 // In your Node.js Express route: routes/predict-budget.js
-const express = require('express');
-const router = express.Router();
-const axios = require('axios');
-const Transaction = require('../models/Transaction'); // Make sure this path is correct
+import express  from 'express';
+const  router = express.Router();
+import axios from 'axios';
+import Transaction from '../models/Transaction.js'; // Make sure this path is correct
 
 // Use an environment variable for your Flask server URL
 // Use an environment variable for your Flask server URL
@@ -98,4 +98,5 @@ router.post('/predict-budget', async (req, res) => {
   }
 });
 
-module.exports = router;
+// module.exports = router;
+export default router; // Use ES6 export for consistency

@@ -7,6 +7,7 @@ import { AuthContext } from '../AuthContext';
 import { Alert } from '@mui/material';
 
 const Register = () => {
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -51,48 +52,45 @@ const Register = () => {
   };
 
   return (
-    <div className="register-container">
-      <div className="register-image">
-        <img src="/Illustration/rev.png" alt="AI Registration Illustration" />
-      </div>
+  <div className="neon-register">
+  <form className="neon-register-form" onSubmit={onSubmit}>
+    <h2 className="neon-title">Create Account</h2>
 
-      <form className="register-form" onSubmit={onSubmit}>
-        <h2>Create Your Account</h2>
+    {alert.message && (
+      <Alert severity={alert.severity} style={{ marginBottom: '1rem' }}>
+        {alert.message}
+      </Alert>
+    )}
 
-        {/* Alert Section */}
-        {alert.message && (
-          <Alert severity={alert.severity} style={{ marginBottom: '1rem' }}>
-            {alert.message}
-          </Alert>
-        )}
-
-        <div className="form-group">
-          <label>Name</label>
-          <input type="text" name="name" value={name} onChange={onChange} placeholder="Name" required autoComplete="name" />
-        </div>
-
-        <div className="form-group">
-          <label>Email</label>
-          <input type="email" name="email" value={email} onChange={onChange} placeholder="you@example.com" required autoComplete="email" />
-        </div>
-
-        <div className="form-group">
-          <label>Password</label>
-          <input type="password" name="password" value={password} onChange={onChange} placeholder="••••••••" required minLength="6" autoComplete="new-password" />
-        </div>
-
-        <div className="form-group">
-          <label>Confirm Password</label>
-          <input type="password" name="password2" value={password2} onChange={onChange} placeholder="••••••••" required minLength="6" autoComplete="new-password" />
-        </div>
-
-        <button type="submit" className="btn">Register</button>
-
-        <p className="redirect">
-          Already have an account? <Link to="/login">Login</Link>
-        </p>
-      </form>
+    <div className="neon-field">
+      <label>Name</label>
+      <input type="text" name="name" value={name} onChange={onChange} placeholder="Your Name" required />
     </div>
+
+    <div className="neon-field">
+      <label>Email</label>
+      <input type="email" name="email" value={email} onChange={onChange} placeholder="you@example.com" required />
+    </div>
+
+    <div className="neon-field">
+      <label>Password</label>
+      <input type="password" name="password" value={password} onChange={onChange} placeholder="••••••••" required />
+    </div>
+
+    <div className="neon-field">
+      <label>Confirm Password</label>
+      <input type="password" name="password2" value={password2} onChange={onChange} placeholder="••••••••" required />
+    </div>
+
+    <button type="submit" className="neon-btn">Register</button>
+
+    <p className="neon-redirect">
+      Already have an account? <Link to="/login">Login</Link>
+    </p>
+  </form>
+</div>
+
+
   );
 };
 

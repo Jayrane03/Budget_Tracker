@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const Transaction = require("../models/Transaction");
-const { getTransactions } = require('../controller/transactionController');
-const auth = require('../middleware/auth');
+import Transaction from"../models/Transaction.js"
+// import {getTransactions} from"../controller/transactionController.js";
+// import auth from'../middleware/auth.js';
 /**
  * Analyzes transactions for anomalies.
  * 
@@ -51,4 +51,4 @@ router.post('/analyze', (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

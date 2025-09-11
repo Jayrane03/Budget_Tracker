@@ -1,15 +1,16 @@
-// routes/authRoutes.js
-const express = require('express');
+import express from 'express';
+import { registerUser, loginUser } from '../controller/authController.js';
+import auth from '../middleware/auth.js';
+import User from '../models/User.js';
+
 const router = express.Router();
-const { registerUser, loginUser, getUser } = require('../controller/authController');
-const auth = require('../middleware/auth');
-const User = require('../models/User');
+
 router.post('/register', registerUser);
 router.post('/login', loginUser);
-// router.get('/user', auth, getUser);
+
 router.get('/user', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password'); // remove password
+    const user = await User.findById(req.user.id).select('-password');
     if (!user) return res.status(404).json({ msg: 'User not found' });
 
     res.json({
@@ -25,4 +26,4 @@ router.get('/user', auth, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

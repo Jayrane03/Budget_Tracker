@@ -1,22 +1,21 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const connectDB = require('./config/db');
 
-// Load environment variables
+import dotenv from 'dotenv';
+dotenv.config();
 
+import express from 'express';
+import cors from 'cors';
+import connectDB from './config/db.js'; // Add `.js` extension for ESM
 
-// Route imports
-const authRoutes = require('./routes/authRoutes');
-const transactionRoutes = require('./routes/transRoutes');
-const predictRoutes = require('./routes/predict');
-const analyzeRoute = require('./routes/analys');
-const budgetRoutes = require('./routes/budgetRoutes');
-const app = express();
-
+// Route imports (all must use `.js` extension in ESM)
+import authRoutes from './routes/authRoutes.js';
+import transactionRoutes from './routes/transRoutes.js';
+import predictRoutes from './routes/predict.js';
+import analyzeRoute from './routes/analys.js';
+import budgetRoutes from './routes/budgetRoutes.js';
+import chatRoutes from './routes/chatRoutes.js';
 // Connect to MongoDB
 connectDB();
-
+const app = express();
 // CORS setup
 const allowedOrigins = [
   'http://localhost:5173',                            // Local dev
@@ -43,7 +42,7 @@ app.use('/api/transactions', transactionRoutes);
 app.use('/api/analyze', analyzeRoute);
 app.use('/api', predictRoutes);
 app.use('/api/budget',budgetRoutes);
-
+app.use('/api/chat', chatRoutes);
 // Health check route
 app.get('/', (req, res) => {
   res.send('API is running...');

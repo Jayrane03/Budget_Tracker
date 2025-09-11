@@ -1,7 +1,7 @@
-const Transaction = require('../models/Transaction');
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import Transaction from '../models/Transaction.js';
 
-exports.getTransactions = async (req, res) => {
+export const getTransactions = async (req, res) => {
   try {
     const transactions = await Transaction.find({ user: req.user.id }).sort({ date: -1 });
     res.json(transactions);
@@ -11,7 +11,7 @@ exports.getTransactions = async (req, res) => {
   }
 };
 
-exports.addTransaction = async (req, res) => {
+export const addTransaction = async (req, res) => {
   const { description, amount, category, type, date } = req.body;
 
   try {
@@ -32,13 +32,11 @@ exports.addTransaction = async (req, res) => {
   }
 };
 
-exports.updateTransaction = async (req, res) => {
+export const updateTransaction = async (req, res) => {
   const { description, amount, category, type, date } = req.body;
-  const transactionFields = { description, amount, category, type, date };
 
   try {
     let transaction = await Transaction.findById(req.params.id);
-
     if (!transaction) return res.status(404).json({ msg: 'Transaction not found' });
 
     if (transaction.user.toString() !== req.user.id) {
@@ -47,7 +45,7 @@ exports.updateTransaction = async (req, res) => {
 
     transaction = await Transaction.findByIdAndUpdate(
       req.params.id,
-      { $set: transactionFields },
+      { $set: { description, amount, category, type, date } },
       { new: true }
     );
 
@@ -58,41 +56,37 @@ exports.updateTransaction = async (req, res) => {
   }
 };
 
-exports.deleteTransaction = async (req, res) => {
+export const deleteTransaction = async (req, res) => {
   try {
-    let transaction = await Transaction.findById(req.params.id);
-
+    const transaction = await Transaction.findById(req.params.id);
     if (!transaction) return res.status(404).json({ msg: 'Transaction not found' });
 
     if (transaction.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: 'Not authorized' });
     }
 
-    // await Transaction.findByIdAndRemove(req.params.id);
-   await Transaction.findByIdAndDelete(req.params.id)
-    
+    await Transaction.findByIdAndDelete(req.params.id);
     res.json({ msg: 'Transaction removed' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 };
-exports.deleteAllTransactions = async (req, res) => {
-try {
-  await Transaction.deleteMany({ user: req.user.id });
-  res.json({ msg: 'All transactions deleted' });
-  
-} catch (error) {
-  console.error(error.message);   
-  res.status(500).send('Server error');
-}
 
-}
+export const deleteAllTransactions = async (req, res) => {
+  try {
+    await Transaction.deleteMany({ user: req.user.id });
+    res.json({ msg: 'All transactions deleted' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
 
-exports.categorySummary = async (req, res) => {
+export const categorySummary = async (req, res) => {
   try {
     const summary = await Transaction.aggregate([
-      { $match: { user: mongoose.Types.ObjectId(req.user.id) } },
+      { $match: { user: new mongoose.Types.ObjectId(req.user.id) } },
       { $group: { _id: '$category', total: { $sum: '$amount' } } }
     ]);
     res.json(summary);
@@ -102,10 +96,10 @@ exports.categorySummary = async (req, res) => {
   }
 };
 
-exports.monthlySummary = async (req, res) => {
+export const monthlySummary = async (req, res) => {
   try {
     const monthly = await Transaction.aggregate([
-      { $match: { user: mongoose.Types.ObjectId(req.user.id) } },
+      { $match: { user: new mongoose.Types.ObjectId(req.user.id) } },
       {
         $group: {
           _id: {

@@ -1,5 +1,5 @@
 # python-ai/app.py
-
+import os, requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
@@ -12,6 +12,11 @@ import datetime
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
+API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
+
+
++
 # Predefined categories for transaction classification
 CATEGORIES = {
     'food': ['grocery', 'restaurant', 'cafe', 'food', 'dinner', 'lunch', 'breakfast', 'meal', 'takeout', 'pizza', 'burger'],
@@ -39,7 +44,17 @@ def categorize_transaction():
 
     return jsonify({'category': 'Miscellaneous'})
 
-
+@app.route('/chat', methods=['POST'])
+def chat():
+    user_input = request.json.get("message")
+    payload = {
+        "contents": [{"parts": [{"text": user_input}]}]
+    }
+    response = requests.post(
+        f"{GEMINI_URL}?key={API_KEY}",
+        json=payload
+    )
+    return jsonify(response.json())
 @app.route('/api/analyze', methods=['POST'])
 def analyze_spending():
     """Analyze spending patterns from transaction data"""
