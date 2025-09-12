@@ -29,6 +29,7 @@
     "react-csv": "^2.2.2",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.6.1",
+    "react-transition-group": "^4.4.5",
     "three": "^0.177.0"
   },
   "devDependencies": {

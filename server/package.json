@@ -4,7 +4,6 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,9 +16,12 @@
     "bcryptjs": "^3.0.2",
     "child_process": "^1.0.2",
     "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
+    "dotenv": "^16.6.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.2"
+  },
+  "devDependencies": {
+    "http-proxy-middleware": "^3.0.5"
   }
 }
