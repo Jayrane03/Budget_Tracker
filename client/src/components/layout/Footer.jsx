@@ -60,7 +60,7 @@ const Footer = () => {
             </ul>
             <div className="column-title">Tools</div>
             <ul>
-              <li><a href="#">Budget Quiz</a></li>
+              <li><a href="/dashboard">Chat Bot</a></li>
             </ul>
           </div>
 
