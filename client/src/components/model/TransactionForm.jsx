@@ -9,9 +9,14 @@ import {
   Select,
   MenuItem,
   Typography,
-  CircularProgress // For loading indicator on auto-categorize
+  CircularProgress
 } from '@mui/material';
-import config from '../../services/helper'; // Assuming this path is correct
+import config from '../../services/helper';
+
+const categoryOptions = [
+  'Food', 'Rent', 'Transportation', 'Utilities', 'Entertainment',
+  'Savings', 'Healthcare', 'Shopping', 'Loans', 'Insurance', 'Education', 'Miscellaneous'
+];
 
 const TransactionForm = ({ addTransaction, handleClose }) => {
   const [formData, setFormData] = useState({
@@ -19,11 +24,11 @@ const TransactionForm = ({ addTransaction, handleClose }) => {
     amount: '',
     category: '',
     type: 'expense',
-    date: new Date().toISOString().split('T')[0] // Sets default to today's date
+    date: new Date().toISOString().split('T')[0]
   });
 
-  const [loading, setLoading] = useState(false); // For auto-categorize button
-  const [submitError, setSubmitError] = useState(''); // For form submission errors
+  const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const { description, amount, category, type, date } = formData;
 
@@ -51,7 +56,7 @@ const TransactionForm = ({ addTransaction, handleClose }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setSubmitError(''); // Clear previous errors
+    setSubmitError('');
 
     if (!description || !amount || !category) {
       setSubmitError('Please fill all required fields.');
@@ -66,10 +71,8 @@ const TransactionForm = ({ addTransaction, handleClose }) => {
       date
     };
 
-    // Call the addTransaction prop (which will make the API call and close the modal)
     addTransaction(newTransaction);
 
-    // Reset form data after submission
     setFormData({
       description: '',
       amount: '',
@@ -77,9 +80,6 @@ const TransactionForm = ({ addTransaction, handleClose }) => {
       type: 'expense',
       date: new Date().toISOString().split('T')[0]
     });
-
-    // We don't call handleClose here directly, as addTransaction in the parent
-    // component (BudgetDashboardContent) is responsible for closing the modal after the API call.
   };
 
   return (
@@ -89,12 +89,10 @@ const TransactionForm = ({ addTransaction, handleClose }) => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        gap: 2, // Spacing between form elements
-        p: 2, // Padding inside the form if it's not already handled by parent Box
+        gap: 2,
+        p: 2
       }}
     >
-      
-
       <TextField
         label="Description"
         name="description"
@@ -111,7 +109,7 @@ const TransactionForm = ({ addTransaction, handleClose }) => {
         onClick={handleCategorize}
         disabled={loading || !description}
         startIcon={loading ? <CircularProgress size={20} /> : null}
-        sx={{ mb: 1 }} // Margin bottom for spacing
+        sx={{ mb: 1 }}
       >
         {loading ? 'Categorizing...' : 'Auto-categorize'}
       </Button>
@@ -129,6 +127,7 @@ const TransactionForm = ({ addTransaction, handleClose }) => {
         variant="outlined"
       />
 
+      {/* Type (Expense/Income) */}
       <FormControl fullWidth required variant="outlined">
         <InputLabel id="type-select-label">Type</InputLabel>
         <Select
@@ -143,16 +142,23 @@ const TransactionForm = ({ addTransaction, handleClose }) => {
         </Select>
       </FormControl>
 
-      <TextField
-        label="Category"
-        name="category"
-        value={category}
-        onChange={onChange}
-        placeholder="e.g., Food, Transport, Salary"
-        fullWidth
-        required
-        variant="outlined"
-      />
+      {/* Category dropdown */}
+      <FormControl fullWidth required variant="outlined">
+        <InputLabel id="category-select-label">Category</InputLabel>
+        <Select
+          labelId="category-select-label"
+          name="category"
+          value={category}
+          onChange={onChange}
+          label="Category"
+        >
+          {categoryOptions.map((cat, index) => (
+            <MenuItem key={index} value={cat}>
+              {cat}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
       <TextField
         label="Date"
@@ -161,10 +167,9 @@ const TransactionForm = ({ addTransaction, handleClose }) => {
         value={date}
         onChange={onChange}
         fullWidth
-        
         required
         variant="outlined"
-        InputLabelProps={{ shrink: true }} // Ensures label is always "shrunk" for date input
+        InputLabelProps={{ shrink: true }}
       />
 
       {submitError && (

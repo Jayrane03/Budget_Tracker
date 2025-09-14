@@ -1,3 +1,4 @@
+// routes/chatRoutes.js
 import express from 'express';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import authMiddleware from '../middleware/auth.js';
@@ -6,8 +7,11 @@ import Chat from '../models/ChatSchema.js';
 import { analyzeSpending, predictBudget } from '../config/financeDetails.js';
 
 const router = express.Router();
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'AIzaSyBBi5_ur6kUA-fmE9OIvnkyHXxDpNlSt6Y');
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY||'AIzaSyBBi5_ur6kUA-fmE9OIvnkyHXxDpNlSt6Y');
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+// GET /api/chat/history
 router.get('/history', authMiddleware, async (req, res) => {
   try {
     const chats = await Chat.find({ userId: req.user.id }).sort({ createdAt: 1 });
@@ -17,6 +21,8 @@ router.get('/history', authMiddleware, async (req, res) => {
     res.status(500).json({ msg: "Server error fetching chat history" });
   }
 });
+
+// DELETE /api/chat/clear-chat
 router.delete('/clear-chat', authMiddleware, async (req, res) => {
   try {
     if (!req.user || !req.user.id) {
@@ -26,7 +32,10 @@ router.delete('/clear-chat', authMiddleware, async (req, res) => {
     const result = await Chat.deleteMany({ userId: req.user.id });
     console.log('Chat delete result:', result);
 
-    res.status(200).json({ message: 'Chat history cleared successfully', deletedCount: result.deletedCount });
+    res.status(200).json({
+      message: 'Chat history cleared successfully',
+      deletedCount: result.deletedCount
+    });
   } catch (err) {
     console.error('Error clearing chat:', err);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -43,14 +52,12 @@ router.post('/bot', authMiddleware, async (req, res) => {
   }
 
   try {
-    // Fetch user data from DB
     const user = await User.findById(userId).lean();
     if (!user) return res.status(404).json({ reply: "User not found." });
 
     const transactions = user.transactions || [];
     const income = user.income || 0;
 
-    // Analyze spending & budget
     const analysis = analyzeSpending(transactions);
     const budget = predictBudget(transactions, income);
 
@@ -65,11 +72,9 @@ router.post('/bot', authMiddleware, async (req, res) => {
       Please provide a clear, actionable response with advice.
     `;
 
-    // Generate AI response
     const result = await model.generateContent(prompt);
     const botReply = result.response?.text() || "🤖 I don't have a response for that.";
 
-    // Save chat in DB
     const newChat = new Chat({
       userId,
       messages: [

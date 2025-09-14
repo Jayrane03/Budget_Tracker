@@ -1,35 +1,41 @@
 // models/Transaction.js
-import mongoose from'mongoose';
+import mongoose from "mongoose";
 
-const TransactionSchema = new mongoose.Schema({
+const { Schema, model } = mongoose;
+
+const TransactionSchema = new Schema({
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
+    trim: true, // removes extra spaces
   },
   amount: {
     type: Number,
-    required: true
+    required: true,
   },
   category: {
     type: String,
-    required: true
+    required: true,
+    trim: true,
   },
   type: {
     type: String,
-    enum: ['income', 'expense'],
-    required: true
+    enum: ["income", "expense"],
+    required: true,
   },
   date: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-const Transaction = mongoose.model('Transaction', TransactionSchema);
+// Avoid model overwrite issues in dev with hot reload
+const Transaction =
+  mongoose.models.Transaction || model("Transaction", TransactionSchema);
 
 export default Transaction;

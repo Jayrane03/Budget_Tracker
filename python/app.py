@@ -7,7 +7,7 @@ import datetime
 import json
 
 app = Flask(__name__)
-# CORS(app, origins=["http://localhost:5173"])
+CORS(app, origins=["http://localhost:5173"])
  # Enable CORS for all routes
 
 # NOTE: For production, use environment variables to store your API key
